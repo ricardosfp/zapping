@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+// kapt for Hilt
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.dagger.hilt.android'
+
+// read properties file
+def appPropertiesFile = rootProject.file("properties/app.properties")
+
+def appProperties = new Properties()
+
+appProperties.load(new FileInputStream(appPropertiesFile))
+
+android {
+    namespace 'com.ricardosfp.zapping'
+
+    compileSdkVersion 33
+
+
+
+    defaultConfig {
+        applicationId "com.ricardosfp.zapping"
+        minSdkVersion 24
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "ZAPPING_URL", appProperties.get("zapping.url"))
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+        buildConfig true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+
+    def lifecycle_version = "2.6.1"
+    def hilt_version = "2.45"
+
+    // Jetpack
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.activity:activity-ktx:1.7.0'
+    implementation 'androidx.fragment:fragment-ktx:1.5.6'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation 'androidx.preference:preference-ktx:1.2.0'
+    implementation 'androidx.collection:collection-ktx:1.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.3.0'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+
+    implementation 'com.google.android.material:material:1.8.0'
+
+    // Hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    // RSS Parser
+    implementation 'com.prof18.rssparser:rssparser:5.0.2'
+}

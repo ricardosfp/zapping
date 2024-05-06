@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Zapping</string>
+    <string name="notification_match_name">Match</string>
+    <string name="notification_match_description">Notification about a match</string>
+    <string name="match_list_update_success">Match list updated</string>
+    <string name="match_list_update_error">Couldn\'t update match list</string>
+    <string name="update_title">Update</string>
+</resources>

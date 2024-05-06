@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Zapping</string>
+    <string name="notification_match_name">Jogo</string>
+    <string name="notification_match_description">Notificação acerca de um jogo</string>
+    <string name="match_list_update_success">Lista de jogos atualizada</string>
+    <string name="match_list_update_error">Erro a atualizar a lista de jogos</string>
+    <string name="update_title">Atualizar</string>
+</resources>
