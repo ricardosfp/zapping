@@ -5,6 +5,7 @@ import java.util.*
 import javax.inject.*
 
 // todo test this
+// todo are the parse and format functions really necessary?
 @Singleton
 class DateUtilsImpl @Inject constructor(): DateUtils {
 
