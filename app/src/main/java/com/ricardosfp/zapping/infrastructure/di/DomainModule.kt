@@ -1,6 +1,6 @@
 package com.ricardosfp.zapping.infrastructure.di
 
-import com.ricardosfp.zapping.domain.article.*
+import com.ricardosfp.zapping.domain.match.*
 import dagger.*
 import dagger.hilt.*
 import dagger.hilt.components.*
@@ -12,6 +12,6 @@ abstract class DomainModule {
 
     @Binds
     @Singleton
-    abstract fun bindArticleParser(articleParser: ArticleParserImpl): ArticleParser
+    abstract fun bindMatchParser(matchParser: MatchParserImpl): MatchParser
 
 }

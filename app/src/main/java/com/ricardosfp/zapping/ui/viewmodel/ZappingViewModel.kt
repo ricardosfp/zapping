@@ -3,7 +3,7 @@ package com.ricardosfp.zapping.ui.viewmodel
 import androidx.lifecycle.*
 import com.ricardosfp.zapping.data.repository.contract.*
 import com.ricardosfp.zapping.data.repository.model.*
-import com.ricardosfp.zapping.domain.article.*
+import com.ricardosfp.zapping.domain.match.*
 import com.ricardosfp.zapping.domain.model.*
 import com.ricardosfp.zapping.infrastructure.alarm.*
 import com.ricardosfp.zapping.infrastructure.model.*
@@ -18,7 +18,7 @@ class ZappingViewModel @Inject constructor(
     private val zappingRepository: ZappingRepository,
     private val dateUtils: DateUtils,
     private val alarmManager: MyAlarmManager,
-    private val articleParser: ArticleParser
+    private val matchParser: MatchParser
 ): ViewModel() {
 
     private val _matchesLiveData = MutableLiveData<GetMatchesResponse>()
@@ -32,8 +32,8 @@ class ZappingViewModel @Inject constructor(
                 _matchesLiveData.value = when (response) {
                     is GetMatchesRepositoryResponseSuccess -> {
 
-                        val matches = response.channel.articles.mapNotNull {
-                            articleParser.parse(it)
+                        val matches = response.articles.mapNotNull {
+                            matchParser.parse(it)
                         }
 
                         val dayMap = TreeMap<Date, ArrayList<Match>>()
