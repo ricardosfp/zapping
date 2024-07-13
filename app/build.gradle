@@ -15,8 +15,7 @@ android {
     namespace 'com.ricardosfp.zapping'
 
     compileSdkVersion 33
-
-
+    buildToolsVersion '34.0.0'
 
     defaultConfig {
         applicationId "com.ricardosfp.zapping"
@@ -45,12 +44,19 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
 }
 
 dependencies {
 
     def lifecycle_version = "2.6.1"
     def hilt_version = "2.45"
+    def junit_version = "5.10.3"
 
     // Jetpack
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -72,4 +78,9 @@ dependencies {
 
     // RSS Parser
     implementation 'com.prof18.rssparser:rssparser:5.0.2'
+
+    // test
+    testImplementation(platform("org.junit:junit-bom:$junit_version"))
+    // this is an aggregator module that includes the api, the params (for parametrized tests) and the engine
+    testImplementation "org.junit.jupiter:junit-jupiter"
 }
