@@ -31,8 +31,11 @@ class MatchParserImpl @Inject constructor(
                         val awayTeam = teams[1]
                         val channel = parts[2]
 
-                        MatchParseSuccess(Match(homeTeam, awayTeam, date, channel, originalText))
-
+                        if (homeTeam.isEmpty() || awayTeam.isEmpty() || channel.isEmpty()) {
+                            MatchParseTitleError
+                        } else {
+                            MatchParseSuccess(Match(homeTeam, awayTeam, date, channel, originalText))
+                        }
                     } else {
                         // not two teams
                         // todo report this error
