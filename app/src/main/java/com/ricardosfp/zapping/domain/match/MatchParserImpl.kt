@@ -17,8 +17,8 @@ class MatchParserImpl @Inject constructor(
         private val dateFormat = SimpleDateFormat("E, d MMM yyyy HH:mm:ss", Locale.ENGLISH)
     }
 
-    override fun parse(article: MyArticle): Match? {
-        try {
+    override fun parse(article: MyArticle): MatchParseResult {
+        return try {
             val date = dateUtils.parse(dateFormat, article.date)
             val originalText = article.title
 
@@ -31,28 +31,35 @@ class MatchParserImpl @Inject constructor(
                         val awayTeam = teams[1]
                         val channel = parts[2]
 
-                        return Match(homeTeam, awayTeam, date, channel, originalText)
+                        MatchParseSuccess(Match(homeTeam, awayTeam, date, channel, originalText))
 
                     } else {
                         // not two teams
                         // todo report this error
+                        MatchParseTitleError
                     }
                 } else {
                     // not the right number of string slices to extract
                     // information from
                     // todo report this error
+                    MatchParseTitleError
                 }
             } else {
-                // date null
+                // date null. I don't think that this happens
                 // todo report this error
+                MatchParseUnknownError
             }
+        }
+        catch (ex: ParseException) {
+            ex.printStackTrace()
+            // todo report this error
+            return MatchParseDateError(ex)
         }
         catch (ex: Exception) {
             ex.printStackTrace()
             // todo report this error
+            return MatchParseExceptionError(ex)
         }
-
-        return null
     }
 
 }
