@@ -7,7 +7,6 @@ import java.text.*
 import java.util.*
 import javax.inject.*
 
-// todo test this class
 @Singleton
 class MatchParserImpl @Inject constructor(
     private val dateUtils: DateUtils,
