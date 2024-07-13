@@ -32,8 +32,13 @@ class ZappingViewModel @Inject constructor(
                 _matchesLiveData.value = when (response) {
                     is GetMatchesRepositoryResponseSuccess -> {
 
+                        // this should be done in a future Use Case, not here
                         val matches = response.articles.mapNotNull {
-                            matchParser.parse(it)
+                            val matchParseResult = matchParser.parse(it)
+
+                            if (matchParseResult is MatchParseSuccess) {
+                                matchParseResult.match
+                            } else null
                         }
 
                         val dayMap = TreeMap<Date, ArrayList<Match>>()
