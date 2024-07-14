@@ -12,8 +12,7 @@ import java.util.*
 import javax.inject.*
 
 @Singleton
-class MyAlarmManagerImpl @Inject constructor(@ApplicationContext val context: Context):
-    MyAlarmManager {
+class MyAlarmManagerImpl @Inject constructor(@ApplicationContext val context: Context): MyAlarmManager {
 
     override fun scheduleAlarm(alarm: Alarm) {
         val dateCalendar = Calendar.getInstance()
@@ -24,7 +23,6 @@ class MyAlarmManagerImpl @Inject constructor(@ApplicationContext val context: Co
             return
         }
 
-        val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val alarmBundle = Bundle()
 
         // https://commonsware.com/blog/2016/07/22/be-careful-where-you-use-custom-parcelables.html
@@ -41,11 +39,19 @@ class MyAlarmManagerImpl @Inject constructor(@ApplicationContext val context: Co
         // https://stackoverflow.com/questions/17569896/android-alarmmanager-is-there-a-way-to-cancell-all-the-alarms-set
         // https://stackoverflow.com/questions/27637744/cancel-all-the-alarms-set-using-alarmmanager?noredirect=1&lq=1
         // I have to use different request codes or else each pending intent overwrites the previous
-        val alarmPendingIntent = PendingIntent.getBroadcast(context, alarm.matchText.hashCode(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val alarmPendingIntent = PendingIntent.getBroadcast(context, alarm.matchText.hashCode(), alarmIntent, PendingIntent.FLAG_IMMUTABLE)
 
         dateCalendar.add(Calendar.MINUTE, -30)
         Log.d("alarm", String.format("alarm set for %s", dateCalendar.time.toString()))
-        alarmMgr.setExact(AlarmManager.RTC_WAKEUP, dateCalendar.timeInMillis, alarmPendingIntent) // alarmMgr.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 15000, alarmPendingIntent);
+
+        val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (alarmMgr.canScheduleExactAlarms()) {
+                alarmMgr.setExact(AlarmManager.RTC_WAKEUP, dateCalendar.timeInMillis, alarmPendingIntent) // alarmMgr.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 15000, alarmPendingIntent);
+            }
+        } else {
+            alarmMgr.setExact(AlarmManager.RTC_WAKEUP, dateCalendar.timeInMillis, alarmPendingIntent) // alarmMgr.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 15000, alarmPendingIntent);
+        }
     }
 
 }
