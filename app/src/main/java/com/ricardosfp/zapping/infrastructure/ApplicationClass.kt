@@ -3,9 +3,13 @@ package com.ricardosfp.zapping.infrastructure
 import android.app.*
 import android.os.*
 import dagger.hilt.android.*
+import kotlinx.coroutines.*
 
 @HiltAndroidApp
 class ApplicationClass: Application() {
+
+    val applicationScope = CoroutineScope(SupervisorJob())
+
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
