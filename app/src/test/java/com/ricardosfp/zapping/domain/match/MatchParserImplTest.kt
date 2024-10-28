@@ -1,6 +1,7 @@
 package com.ricardosfp.zapping.domain.match
 
 import com.ricardosfp.zapping.data.repository.model.*
+import com.ricardosfp.zapping.domain.model.*
 import com.ricardosfp.zapping.infrastructure.util.date.*
 import org.junit.jupiter.api.*
 import java.util.*
@@ -14,9 +15,10 @@ class MatchParserImplTest {
     private val validArticleHomeTeam = "Peñarol"
     private val validArticleAwayTeam = "Atlético Mineiro"
     private val validArticleChannel = "SportTv1"
-    private var validArticleTitle: String = String.format("%s x %s - 14/05 23:00 - %s", validArticleHomeTeam, validArticleAwayTeam, validArticleChannel)
+    private val validArticleTitle = String.format("%s x %s - 14/05 23:00 - %s", validArticleHomeTeam, validArticleAwayTeam, validArticleChannel)
     private val validArticle = MyArticle(validArticleDateString, validArticleTitle)
 
+    // invalid articles
     private val invalidArticleInvalidDate = MyArticle("14 May 24", validArticleTitle)
     private val invalidArticleInvalidHomeTeam = MyArticle(validArticleDateString, " x Atlético Mineiro - 14/05 23:00 - SportTv1")
     private val invalidArticleInvalidAwayTeam = MyArticle(validArticleDateString, "Peñarol x  - 14/05 23:00 - SportTv1")

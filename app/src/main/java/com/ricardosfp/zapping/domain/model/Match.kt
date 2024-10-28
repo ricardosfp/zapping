@@ -4,7 +4,7 @@ import java.io.*
 import java.util.*
 
 // todo does this have to be Serializable?
-class Match(
+data class Match(
     val homeTeam: String,
     val awayTeam: String,
     val date: Date,

@@ -32,7 +32,8 @@ class ZappingViewModel @Inject constructor(
                 _matchesLiveData.value = when (response) {
                     is GetMatchesRepositoryResponseSuccess -> {
 
-                        // this should be done in a future Use Case, not here
+                        // todo this should be done in a future Use Case, not here, to avoid calling the repository,
+                        //  getting a response and then calling the domain layer
                         val matches = response.articles.mapNotNull {
                             val matchParseResult = matchParser.parse(it)
 
@@ -40,6 +41,8 @@ class ZappingViewModel @Inject constructor(
                                 matchParseResult.match
                             } else null
                         }
+
+                        // todo matches should be ordered in crescent order. We have no guarantee that they come ordered
 
                         val dayMap = TreeMap<Date, ArrayList<Match>>()
                         matches.forEach { match ->
