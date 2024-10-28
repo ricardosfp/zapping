@@ -76,7 +76,7 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     // RSS Parser
-    implementation 'com.prof18.rssparser:rssparser:5.0.2'
+    implementation 'com.prof18.rssparser:rssparser:6.0.8'
 
     // test
     testImplementation(platform("org.junit:junit-bom:$junit_version"))

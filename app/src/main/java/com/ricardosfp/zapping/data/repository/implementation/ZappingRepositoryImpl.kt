@@ -1,33 +1,27 @@
 package com.ricardosfp.zapping.data.repository.implementation
 
-import android.content.*
-import com.prof.rssparser.*
-import com.ricardosfp.zapping.BuildConfig
+import com.prof18.rssparser.*
+import com.ricardosfp.zapping.*
 import com.ricardosfp.zapping.data.repository.contract.*
 import com.ricardosfp.zapping.data.repository.model.*
-import dagger.hilt.android.qualifiers.*
 import javax.inject.*
 
 // todo test
 @Singleton
-class ZappingRepositoryImpl @Inject constructor(
-    @ApplicationContext context: Context
-): ZappingRepository {
+class ZappingRepositoryImpl @Inject constructor(): ZappingRepository {
 
-    // since this field is already part of a singleton and is only used in here, there is no
-    // strong need to inject it
-    private val parser: Parser = Parser.Builder()
-        //.charset(StandardCharsets.ISO_8859_1)
-        .context(context).cacheExpirationMillis((1000 * 60 * 60 * 24).toLong()).build()
+    // todo inject the RssParser
+    private val parser = RssParser()
 
-    override suspend fun getMatches(): GetMatchesRepositoryResponse {
+    // todo handle parser/network errors
+    override suspend fun getArticles(): GetArticlesResult {
 
         return try {
             // the library automatically changes the context of the coroutine
-            val channel = parser.getChannel(BuildConfig.ZAPPING_URL)
+            val channel = parser.getRssChannel(BuildConfig.ZAPPING_URL)
 
             // is it worth it putting this into a separate class for testing purposes?
-            val articleList = channel.articles.mapNotNull {
+            val articleList = channel.items.mapNotNull {
                 val date = it.pubDate
                 val title = it.title
 
@@ -38,10 +32,10 @@ class ZappingRepositoryImpl @Inject constructor(
                 }
             }
 
-            GetMatchesRepositoryResponseSuccess(articleList)
+            GetArticlesSuccess(articleList)
         }
         catch (th: Throwable) {
-            GetMatchesRepositoryResponseError(th)
+            GetArticlesError(th)
         }
 
     }
