@@ -4,5 +4,5 @@ import com.ricardosfp.zapping.data.repository.model.*
 
 interface ZappingRepository {
 
-    suspend fun getMatches(): GetMatchesRepositoryResponse
+    suspend fun getArticles(): GetArticlesResult
 }

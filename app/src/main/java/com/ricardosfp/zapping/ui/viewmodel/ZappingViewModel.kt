@@ -26,11 +26,11 @@ class ZappingViewModel @Inject constructor(
 
     fun getMatches() {
         viewModelScope.launch {
-            val response = zappingRepository.getMatches()
+            val response = zappingRepository.getArticles()
 
             withContext(Dispatchers.Main) {
                 _matchesLiveData.value = when (response) {
-                    is GetMatchesRepositoryResponseSuccess -> {
+                    is GetArticlesSuccess -> {
 
                         // todo this should be done in a future Use Case, not here, to avoid calling the repository,
                         //  getting a response and then calling the domain layer
@@ -54,7 +54,7 @@ class ZappingViewModel @Inject constructor(
                         GetMatchesResponseSuccess(dayMap)
                     }
 
-                    is GetMatchesRepositoryResponseError -> {
+                    is GetArticlesError -> {
                         GetMatchesResponseError(response.throwable)
                     }
                 }
