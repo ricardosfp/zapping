@@ -45,9 +45,11 @@ class ZappingFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // todo how often is this being called? maybe call this in the activity and check the
-        //  savedInstanceState
-        viewModel.getMatches()
+        // todo this means that data is not fetched again when recovering from process death.
+        //  Implement a cache mechanism. See (refresh = false)
+        if (savedInstanceState == null) {
+            viewModel.getMatches()
+        }
         // this has to be done here with the view lifecycle to avoid a strange situation (for example,
         // when having a FragmentTransaction to another Fragment and then popping the back stack).
         // In that case the view gets destroyed but the Fragment itself does not get destroyed.
@@ -86,12 +88,6 @@ class ZappingFragment: Fragment() {
             }
         }
     }
-
-//    override fun onStart() {
-//        super.onStart()
-        // refresh only if the last response is x old
-        // viewModel.forceRefreshMatches();
-//    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {

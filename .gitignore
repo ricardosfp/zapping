@@ -39,3 +39,5 @@ gen-external-apklibs
 
 # Replacement of .externalNativeBuild directories introduced
 # with Android Studio 3.5.
+
+private readme
