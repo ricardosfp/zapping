@@ -18,7 +18,7 @@ class MainActivity: AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(viewBinding.fragmentFrame.id, ZappingFragment::class.java, null)
+                .replace(viewBinding.fragmentContainer.id, ZappingFragment::class.java, null)
                 .commit()
         }
 
