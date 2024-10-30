@@ -16,14 +16,20 @@ class MatchParserImplTest {
     private val validArticleHomeTeam = "Peñarol"
     private val validArticleAwayTeam = "Atlético Mineiro"
     private val validArticleChannel = "SportTv1"
-    private val validArticleTitle = String.format("%s x %s - 14/05 23:00 - %s", validArticleHomeTeam, validArticleAwayTeam, validArticleChannel)
-    private val validArticle = MyArticle(validArticleDateString, validArticleTitle)
+    private val validArticleTitle = String.format("%s x %s - 14/05 23:00 - %s",
+        validArticleHomeTeam,
+        validArticleAwayTeam,
+        validArticleChannel)
+    private val validArticle = MyArticle(title = validArticleTitle, date = validArticleDateString)
 
     // invalid articles
-    private val invalidArticleInvalidDate = MyArticle("14 May 24", validArticleTitle)
-    private val invalidArticleInvalidHomeTeam = MyArticle(validArticleDateString, " x Atlético Mineiro - 14/05 23:00 - SportTv1")
-    private val invalidArticleInvalidAwayTeam = MyArticle(validArticleDateString, "Peñarol x  - 14/05 23:00 - SportTv1")
-    private val invalidArticleInvalidChannel = MyArticle(validArticleDateString, "Peñarol x Atlético Mineiro - 14/05 23:00 - ")
+    private val invalidArticleInvalidDate = MyArticle(title = validArticleTitle, date = "14 May 24")
+    private val invalidArticleInvalidHomeTeam = MyArticle(title = " x " + "Atlético Mineiro - 14/05 23:00 - SportTv1",
+        date = validArticleDateString)
+    private val invalidArticleInvalidAwayTeam = MyArticle(title = "Peñarol x  - 14/05 23:00 - SportTv1",
+        date = validArticleDateString)
+    private val invalidArticleInvalidChannel = MyArticle(title = "Peñarol x " + "Atlético Mineiro - 14/05 23:00 - ",
+        date = validArticleDateString)
 
     @BeforeEach
     fun setupInstance() {
