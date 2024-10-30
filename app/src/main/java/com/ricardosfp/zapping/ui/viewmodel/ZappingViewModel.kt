@@ -1,6 +1,7 @@
 package com.ricardosfp.zapping.ui.viewmodel
 
 import androidx.lifecycle.*
+import com.ricardosfp.zapping.*
 import com.ricardosfp.zapping.data.repository.contract.*
 import com.ricardosfp.zapping.data.repository.model.*
 import com.ricardosfp.zapping.domain.match.*
@@ -26,7 +27,7 @@ class ZappingViewModel @Inject constructor(
 
     fun getMatches() {
         viewModelScope.launch {
-            val response = zappingRepository.getArticles()
+            val response = zappingRepository.getArticles(BuildConfig.ZAPPING_URL)
 
             withContext(Dispatchers.Main) {
                 _matchesLiveData.value = when (response) {

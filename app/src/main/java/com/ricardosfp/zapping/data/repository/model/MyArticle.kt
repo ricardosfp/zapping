@@ -1,3 +1,3 @@
 package com.ricardosfp.zapping.data.repository.model
 
-data class MyArticle(val date: String, val title: String)
+data class MyArticle(val title: String, val date: String)
