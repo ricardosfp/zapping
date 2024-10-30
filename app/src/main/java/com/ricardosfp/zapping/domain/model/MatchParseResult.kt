@@ -1,17 +1,15 @@
 package com.ricardosfp.zapping.domain.model
 
+import java.text.*
+
 sealed class MatchParseResult
 
 data class MatchParseSuccess(val match: Match): MatchParseResult()
 
 sealed class MatchParseError: MatchParseResult()
 
-// this should be specified as a ParseException
-data class MatchParseDateError(val exception: Exception): MatchParseError()
+data class MatchParseDateError(val exception: ParseException?): MatchParseError()
 
 data object MatchParseTitleError: MatchParseError()
 
-// MatchParseUnknownExceptionError, because there is another error with exceptions
-data class MatchParseExceptionError(val exception: Exception): MatchParseError()
-
-data object MatchParseUnknownError: MatchParseError()
+data class MatchParseOtherExceptionError(val exception: Exception): MatchParseError()
