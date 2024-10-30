@@ -4,6 +4,7 @@ import com.ricardosfp.zapping.data.repository.model.*
 import com.ricardosfp.zapping.domain.model.*
 import com.ricardosfp.zapping.infrastructure.util.date.*
 import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions.*
 import java.util.*
 
 class MatchParserImplTest {
@@ -34,39 +35,39 @@ class MatchParserImplTest {
     fun parseValidArticle_success() {
         val matchParseResult = matchParser.parse(validArticle)
 
-        Assertions.assertEquals(matchParseResult::class, MatchParseSuccess::class)
+        assertEquals(matchParseResult::class, MatchParseSuccess::class)
 
         val match = (matchParseResult as MatchParseSuccess).match
 
-        Assertions.assertEquals(validArticleTitle, match.originalText)
-        Assertions.assertEquals(validArticleHomeTeam, match.homeTeam)
-        Assertions.assertEquals(validArticleAwayTeam, match.awayTeam)
-        Assertions.assertEquals(Date(2024 - 1900, 4, 14, 23, 0, 0), match.date)
-        Assertions.assertEquals(validArticleChannel, match.channel)
-        Assertions.assertEquals(validArticleTitle, match.originalText)
+        assertEquals(validArticleTitle, match.originalText)
+        assertEquals(validArticleHomeTeam, match.homeTeam)
+        assertEquals(validArticleAwayTeam, match.awayTeam)
+        assertEquals(Date(2024 - 1900, 4, 14, 23, 0, 0), match.date)
+        assertEquals(validArticleChannel, match.channel)
+        assertEquals(validArticleTitle, match.originalText)
     }
 
     @Test
     fun parseInvalidDate_dateError() {
         val matchParseResult = matchParser.parse(invalidArticleInvalidDate)
-        Assertions.assertEquals(MatchParseDateError::class, matchParseResult::class)
+        assertEquals(MatchParseDateError::class, matchParseResult::class)
     }
 
     @Test
     fun parseInvalidHomeTeam_titleError() {
         val matchParseResult = matchParser.parse(invalidArticleInvalidHomeTeam)
-        Assertions.assertEquals(MatchParseTitleError::class, matchParseResult::class)
+        assertEquals(MatchParseTitleError::class, matchParseResult::class)
     }
 
     @Test
     fun parseInvalidAwayTeam_titleError() {
         val matchParseResult = matchParser.parse(invalidArticleInvalidAwayTeam)
-        Assertions.assertEquals(MatchParseTitleError::class, matchParseResult::class)
+        assertEquals(MatchParseTitleError::class, matchParseResult::class)
     }
 
     @Test
     fun parseInvalidChannel_titleError() {
         val matchParseResult = matchParser.parse(invalidArticleInvalidChannel)
-        Assertions.assertEquals(MatchParseTitleError::class, matchParseResult::class)
+        assertEquals(MatchParseTitleError::class, matchParseResult::class)
     }
 }

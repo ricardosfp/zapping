@@ -49,7 +49,7 @@ class MatchParserImpl @Inject constructor(
             } else {
                 // date null. I don't think that this happens
                 // todo report this error
-                MatchParseUnknownError
+                MatchParseDateError(null)
             }
         }
         catch (ex: ParseException) {
@@ -60,7 +60,7 @@ class MatchParserImpl @Inject constructor(
         catch (ex: Exception) {
             ex.printStackTrace()
             // todo report this error
-            return MatchParseExceptionError(ex)
+            return MatchParseOtherExceptionError(ex)
         }
     }
 
