@@ -11,7 +11,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.5.1'
+        classpath 'com.android.tools.build:gradle:8.7.2'
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         // kapt for kotlin
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.0'
