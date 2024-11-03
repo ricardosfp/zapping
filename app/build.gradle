@@ -15,7 +15,7 @@ android {
     namespace 'com.ricardosfp.zapping'
 
     compileSdk 35
-    buildToolsVersion '34.0.0'
+    buildToolsVersion '35.0.0'
 
     defaultConfig {
         applicationId "com.ricardosfp.zapping"
