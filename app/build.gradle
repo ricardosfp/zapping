@@ -55,7 +55,9 @@ android {
 dependencies {
 
     def lifecycle_version = "2.6.1"
+    def coroutines_version = "1.9.0"
     def junit_version = "5.10.3"
+    def mockk_version = "1.13.13"
 
     // Jetpack
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -71,6 +73,9 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.8.0'
 
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+
     // Hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
@@ -78,8 +83,15 @@ dependencies {
     // RSS Parser
     implementation 'com.prof18.rssparser:rssparser:6.0.8'
 
-    // test
+    // testing
+
+    // JUnit
     testImplementation(platform("org.junit:junit-bom:$junit_version"))
     // this is an aggregator module that includes the api, the params (for parametrized tests) and the engine
     testImplementation "org.junit.jupiter:junit-jupiter"
+
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+
+    // Mockk
+    testImplementation "io.mockk:mockk:$mockk_version"
 }

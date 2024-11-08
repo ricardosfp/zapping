@@ -4,7 +4,6 @@ import com.ricardosfp.zapping.data.repository.contract.*
 import com.ricardosfp.zapping.data.repository.model.*
 import javax.inject.*
 
-// todo test
 class ZappingRepositoryImpl @Inject constructor(private val parser: MyRssParser):
     ZappingRepository {
 
@@ -21,11 +20,13 @@ class ZappingRepositoryImpl @Inject constructor(private val parser: MyRssParser)
                     })
                 }
 
-                is RssParseException -> TODO()
+                is RssParseException -> {
+                    GetArticlesError(rssParseResult.exception)
+                }
             }
         }
-        catch (th: Throwable) {
-            GetArticlesError(th)
+        catch (ex: Exception) {
+            GetArticlesError(ex)
         }
 
     }
