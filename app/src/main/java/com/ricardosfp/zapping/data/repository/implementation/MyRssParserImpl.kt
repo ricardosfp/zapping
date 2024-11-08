@@ -5,7 +5,7 @@ import com.ricardosfp.zapping.data.repository.contract.*
 import com.ricardosfp.zapping.data.repository.model.*
 import javax.inject.*
 
-// todo test the rss parser
+// todo test the rss parser, but first it should should receive the text string and not a url
 @Singleton
 class MyRssParserImpl @Inject constructor(private val parser: RssParser): MyRssParser {
 

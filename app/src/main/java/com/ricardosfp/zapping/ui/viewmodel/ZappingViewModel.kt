@@ -56,7 +56,7 @@ class ZappingViewModel @Inject constructor(
                     }
 
                     is GetArticlesError -> {
-                        GetMatchesResponseError(response.throwable)
+                        GetMatchesResponseError(response.exception)
                     }
                 }
             }
