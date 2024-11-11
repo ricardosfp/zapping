@@ -6,6 +6,7 @@ import com.ricardosfp.zapping.data.repository.implementation.*
 import dagger.*
 import dagger.hilt.*
 import dagger.hilt.components.*
+import okhttp3.*
 import javax.inject.*
 
 @Module
@@ -14,17 +15,27 @@ abstract class DataModule {
 
     @Binds
     @Singleton
-    abstract fun bindZappingRepository(zappingRepository: ZappingRepositoryImpl): ZappingRepository
+    abstract fun bindMyHttpClient(myHttpClient: MyHttpClientImpl): MyHttpClient
 
     @Binds
     @Singleton
     abstract fun bindMyRssParser(myRssParser: MyRssParserImpl): MyRssParser
+
+    @Binds
+    @Singleton
+    abstract fun bindZappingRepository(zappingRepository: ZappingRepositoryImpl): ZappingRepository
 
     companion object {
         @Provides
         @Singleton
         fun provideRssParser(): RssParser {
             return RssParser()
+        }
+
+        @Provides
+        @Singleton
+        fun provideOkHttpClient(): OkHttpClient {
+            return OkHttpClient()
         }
     }
 }
