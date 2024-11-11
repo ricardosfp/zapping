@@ -5,16 +5,13 @@ import com.ricardosfp.zapping.data.repository.contract.*
 import com.ricardosfp.zapping.data.repository.model.*
 import javax.inject.*
 
-// todo test the rss parser, but first it should should receive the text string and not a url
 @Singleton
 class MyRssParserImpl @Inject constructor(private val parser: RssParser): MyRssParser {
 
-    override suspend fun parse(url: String): RssParseResult {
+    override suspend fun parse(rssString: String): RssParseResult {
         return try {
-            // todo check if the library automatically changes the context of the coroutine
-            val channel = parser.getRssChannel(url)
+            val channel = parser.parse(rssString)
 
-            // is it worth it putting this into a separate class for testing purposes?
             val articleList = channel.items.mapNotNull {
                 val title = it.title
                 val pubDate = it.pubDate
