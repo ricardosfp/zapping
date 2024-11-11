@@ -28,14 +28,14 @@ abstract class DataModule {
     companion object {
         @Provides
         @Singleton
-        fun provideRssParser(): RssParser {
-            return RssParser()
+        fun provideOkHttpClient(): OkHttpClient {
+            return OkHttpClient()
         }
 
         @Provides
         @Singleton
-        fun provideOkHttpClient(): OkHttpClient {
-            return OkHttpClient()
+        fun provideRssParser(): RssParser {
+            return RssParserBuilder(charset = Charsets.ISO_8859_1).build()
         }
     }
 }

@@ -16,7 +16,7 @@ class MyHttpClientImpl @Inject constructor(private val client: OkHttpClient): My
 
         client.newCall(request).execute().use { response ->
             if (response.isSuccessful) {
-                return@use response.body!!.string()
+                return@use response.body!!.source().readString(Charsets.ISO_8859_1)
             } else {
                 ""
             }
