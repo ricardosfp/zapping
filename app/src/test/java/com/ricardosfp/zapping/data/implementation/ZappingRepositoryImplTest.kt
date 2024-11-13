@@ -47,20 +47,27 @@ class ZappingRepositoryImplTest {
     }
 
     @Test
-    fun `good parsing returns GetArticlesSuccess`() = runTest {
+    fun `unsuccessful http response returns GetArticlesHttpError`() = runTest {
 
-        coEvery { myHttpClient.getAsString(any()) } returns HttpGetSuccess("")
+        coEvery { myHttpClient.getAsString(any()) } returns HttpGetUnsuccessfulResponse("")
         coEvery { myRssParser.parse(any()) } returns RssParseSuccess(parserOutput)
 
         val result = zappingRepository.getArticles("")
-        assertEquals(GetArticlesSuccess::class, result::class)
-        if (result is GetArticlesSuccess) {
-            assertIterableEquals(expectedRepositoryOutput, result.articles)
-        }
+        assertEquals(GetArticlesHttpError::class, result::class)
     }
 
     @Test
-    fun `bad parsing returns GetArticlesParseError`() = runTest {
+    fun `exception in http result returns GetArticlesHttpError`() = runTest {
+
+        coEvery { myHttpClient.getAsString(any()) } returns HttpGetException(Exception())
+        coEvery { myRssParser.parse(any()) } returns RssParseSuccess(parserOutput)
+
+        val result = zappingRepository.getArticles("")
+        assertEquals(GetArticlesHttpError::class, result::class)
+    }
+
+    @Test
+    fun `good http result and bad parsing returns GetArticlesParseError`() = runTest {
 
         coEvery { myHttpClient.getAsString(any()) } returns HttpGetSuccess("")
         coEvery { myRssParser.parse(any()) } returns RssParseException(Exception())
@@ -68,4 +75,29 @@ class ZappingRepositoryImplTest {
         val result = zappingRepository.getArticles("")
         assertEquals(GetArticlesParseError::class, result::class)
     }
+
+    @Test
+    fun `exception thrown returns GetArticlesOtherExceptionError`() = runTest {
+        val exceptionThrown = Exception()
+
+        coEvery { myHttpClient.getAsString(any()) } throws exceptionThrown
+        coEvery { myRssParser.parse(any()) } returns RssParseSuccess(parserOutput)
+
+        val result = zappingRepository.getArticles("")
+        assertEquals(GetArticlesOtherExceptionError::class, result::class)
+        assertEquals(exceptionThrown, (result as GetArticlesOtherExceptionError).exception)
+    }
+
+    @Test
+    fun `good http result and good parsing returns GetArticlesSuccess`() = runTest {
+
+        coEvery { myHttpClient.getAsString(any()) } returns HttpGetSuccess("")
+        coEvery { myRssParser.parse(any()) } returns RssParseSuccess(parserOutput)
+
+        val result = zappingRepository.getArticles("")
+        assertEquals(GetArticlesSuccess::class, result::class)
+        assertIterableEquals(expectedRepositoryOutput, (result as GetArticlesSuccess).articles)
+    }
+
+
 }

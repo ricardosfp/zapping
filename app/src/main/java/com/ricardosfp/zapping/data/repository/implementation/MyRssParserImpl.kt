@@ -3,13 +3,14 @@ package com.ricardosfp.zapping.data.repository.implementation
 import com.prof18.rssparser.*
 import com.ricardosfp.zapping.data.repository.contract.*
 import com.ricardosfp.zapping.data.repository.model.*
+import kotlinx.coroutines.*
 import javax.inject.*
 
 @Singleton
 class MyRssParserImpl @Inject constructor(private val parser: RssParser): MyRssParser {
 
-    override suspend fun parse(rssString: String): RssParseResult {
-        return try {
+    override suspend fun parse(rssString: String): RssParseResult = withContext(Dispatchers.IO) {
+        try {
             val channel = parser.parse(rssString)
 
             val articleList = channel.items.mapNotNull {
