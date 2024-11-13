@@ -4,4 +4,10 @@ sealed class GetArticlesResult
 
 data class GetArticlesSuccess(val articles: List<MyArticle>): GetArticlesResult()
 
-data class GetArticlesError(val exception: Exception): GetArticlesResult()
+sealed class GetArticlesError: GetArticlesResult()
+
+data object GetArticlesHttpError: GetArticlesError()
+
+data object GetArticlesParseError: GetArticlesError()
+
+data class GetArticlesOtherExceptionError(val exception: Exception): GetArticlesError()

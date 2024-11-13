@@ -4,32 +4,38 @@ import com.ricardosfp.zapping.data.repository.contract.*
 import com.ricardosfp.zapping.data.repository.model.*
 import javax.inject.*
 
+@Singleton
 class ZappingRepositoryImpl @Inject constructor(
-    private val parser: MyRssParser, private val httpClient: MyHttpClient
+    private val httpClient: MyHttpClient, private val parser: MyRssParser
 ): ZappingRepository {
 
-    // todo handle parser/network errors
     override suspend fun getArticles(url: String): GetArticlesResult {
 
         return try {
-            val rssString = httpClient.getAsString(url)
+            val httpGetResult = httpClient.getAsString(url)
 
-            val rssParseResult = parser.parse(rssString)
+            when (httpGetResult) {
+                is HttpGetSuccess -> {
+                    val rssParseResult = parser.parse(httpGetResult.bodyAsString)
 
-            when (rssParseResult) {
-                is RssParseSuccess -> {
-                    GetArticlesSuccess(rssParseResult.items.map {
-                        MyArticle(title = it.title, date = it.pubDate)
-                    })
+                    when (rssParseResult) {
+                        is RssParseSuccess -> {
+                            GetArticlesSuccess(rssParseResult.items.map {
+                                MyArticle(title = it.title, date = it.pubDate)
+                            })
+                        }
+
+                        is RssParseError -> {
+                            GetArticlesParseError
+                        }
+                    }
                 }
 
-                is RssParseException -> {
-                    GetArticlesError(rssParseResult.exception)
-                }
+                is HttpGetError -> GetArticlesHttpError
             }
         }
         catch (ex: Exception) {
-            GetArticlesError(ex)
+            GetArticlesOtherExceptionError(ex)
         }
 
     }

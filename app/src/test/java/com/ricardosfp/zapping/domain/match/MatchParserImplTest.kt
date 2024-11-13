@@ -9,7 +9,7 @@ import java.util.*
 
 class MatchParserImplTest {
 
-    private lateinit var matchParser: MatchParser
+    private lateinit var matchParser: MatchParserImpl
 
     companion object {
         //    "Peñarol x Atlético Mineiro - 14/05 23:00 - SportTv1"
