@@ -11,8 +11,9 @@ import org.junit.jupiter.api.Assertions.*
 
 class ZappingRepositoryImplTest {
 
-    private lateinit var zappingRepository: ZappingRepository
+    private lateinit var myHttpClient: MyHttpClient
     private lateinit var myRssParser: MyRssParser
+    private lateinit var zappingRepository: ZappingRepositoryImpl
 
     companion object {
         private val parserOutput = immutableListOf(
@@ -40,13 +41,15 @@ class ZappingRepositoryImplTest {
 
     @BeforeEach
     fun setupInstance() {
+        myHttpClient = mockk()
         myRssParser = mockk()
-        zappingRepository = ZappingRepositoryImpl(myRssParser)
+        zappingRepository = ZappingRepositoryImpl(myHttpClient, myRssParser)
     }
 
     @Test
     fun `good parsing returns GetArticlesSuccess`() = runTest {
 
+        coEvery { myHttpClient.getAsString(any()) } returns HttpGetSuccess("")
         coEvery { myRssParser.parse(any()) } returns RssParseSuccess(parserOutput)
 
         val result = zappingRepository.getArticles("")
@@ -57,11 +60,12 @@ class ZappingRepositoryImplTest {
     }
 
     @Test
-    fun `bad parsing returns GetArticlesError`() = runTest {
+    fun `bad parsing returns GetArticlesParseError`() = runTest {
 
+        coEvery { myHttpClient.getAsString(any()) } returns HttpGetSuccess("")
         coEvery { myRssParser.parse(any()) } returns RssParseException(Exception())
 
         val result = zappingRepository.getArticles("")
-        assertEquals(GetArticlesError::class, result::class)
+        assertEquals(GetArticlesParseError::class, result::class)
     }
 }

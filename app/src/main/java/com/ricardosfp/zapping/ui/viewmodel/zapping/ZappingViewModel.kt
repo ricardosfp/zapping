@@ -1,4 +1,4 @@
-package com.ricardosfp.zapping.ui.viewmodel
+package com.ricardosfp.zapping.ui.viewmodel.zapping
 
 import androidx.lifecycle.*
 import com.ricardosfp.zapping.*
@@ -9,6 +9,7 @@ import com.ricardosfp.zapping.domain.model.*
 import com.ricardosfp.zapping.infrastructure.alarm.*
 import com.ricardosfp.zapping.infrastructure.model.*
 import com.ricardosfp.zapping.infrastructure.util.date.*
+import com.ricardosfp.zapping.ui.viewmodel.zapping.model.*
 import dagger.hilt.android.lifecycle.*
 import kotlinx.coroutines.*
 import java.util.*
@@ -22,8 +23,8 @@ class ZappingViewModel @Inject constructor(
     private val matchParser: MatchParser
 ): ViewModel() {
 
-    private val _matchesLiveData = MutableLiveData<GetMatchesResponse>()
-    val matchesLiveData: LiveData<GetMatchesResponse> = _matchesLiveData
+    private val _matchesLiveData = MutableLiveData<GetMatchesResult>()
+    val matchesLiveData: LiveData<GetMatchesResult> = _matchesLiveData
 
     fun getMatches() {
         viewModelScope.launch {
@@ -52,11 +53,11 @@ class ZappingViewModel @Inject constructor(
                             }.add(match)
                         }
 
-                        GetMatchesResponseSuccess(dayMap)
+                        GetMatchesSuccess(dayMap)
                     }
 
                     is GetArticlesError -> {
-                        GetMatchesResponseError(response.exception)
+                        GetMatchesError
                     }
                 }
             }
@@ -67,7 +68,3 @@ class ZappingViewModel @Inject constructor(
         alarmManager.scheduleAlarm(alarm)
     }
 }
-
-sealed class GetMatchesResponse
-class GetMatchesResponseSuccess(val dayMap: TreeMap<Date, ArrayList<Match>>): GetMatchesResponse()
-class GetMatchesResponseError(val throwable: Throwable): GetMatchesResponse()

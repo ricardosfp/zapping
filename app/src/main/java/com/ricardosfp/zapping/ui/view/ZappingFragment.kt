@@ -12,7 +12,8 @@ import com.ricardosfp.zapping.databinding.*
 import com.ricardosfp.zapping.domain.model.*
 import com.ricardosfp.zapping.infrastructure.model.*
 import com.ricardosfp.zapping.ui.adapter.*
-import com.ricardosfp.zapping.ui.viewmodel.*
+import com.ricardosfp.zapping.ui.viewmodel.zapping.*
+import com.ricardosfp.zapping.ui.viewmodel.zapping.model.*
 import dagger.hilt.android.*
 import java.text.*
 import java.util.*
@@ -56,7 +57,7 @@ class ZappingFragment: Fragment() {
         // So, in that case, the Observer would not be called again
         viewModel.matchesLiveData.observe(viewLifecycleOwner) { response ->
             when (response) {
-                is GetMatchesResponseSuccess -> {
+                is GetMatchesSuccess -> {
                     Snackbar.make(viewBinding.fragmentRssCoordinatorLayout, R.string.match_list_update_success, BaseTransientBottomBar.LENGTH_LONG)
                         .show()
 
@@ -80,7 +81,7 @@ class ZappingFragment: Fragment() {
                     }
                 }
 
-                is GetMatchesResponseError -> {
+                is GetMatchesError -> {
                     // show some error. Do it here or leave it to one of the DayFragment
                     Snackbar.make(viewBinding.fragmentRssCoordinatorLayout, R.string.match_list_update_error, BaseTransientBottomBar.LENGTH_LONG)
                         .show()
