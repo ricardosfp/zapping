@@ -9,6 +9,7 @@ import javax.inject.*
 @Singleton
 class MyRssParserImpl @Inject constructor(private val parser: RssParser): MyRssParser {
 
+    // todo test
     override suspend fun parse(rssString: String): RssParseResult = withContext(Dispatchers.IO) {
         try {
             val channel = parser.parse(rssString)
