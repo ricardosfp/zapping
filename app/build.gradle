@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-// kapt for Hilt
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.dagger.hilt.android'
@@ -15,7 +14,6 @@ android {
     namespace 'com.ricardosfp.zapping'
 
     compileSdk 35
-    buildToolsVersion '35.0.0'
 
     defaultConfig {
         applicationId "com.ricardosfp.zapping"
@@ -54,48 +52,43 @@ android {
 
 dependencies {
 
-    def lifecycle_version = "2.8.7"
-    def coroutines_version = "1.9.0"
-    def junit_version = "5.11.3"
-    def mockk_version = "1.13.13"
-
     // Jetpack
-    implementation 'androidx.activity:activity-ktx:1.9.3'
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'androidx.collection:collection-ktx:1.4.5'
-    implementation 'androidx.core:core-ktx:1.15.0'
-    implementation 'androidx.fragment:fragment-ktx:1.8.5'
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation 'androidx.recyclerview:recyclerview:1.3.2'
-    implementation 'androidx.viewpager2:viewpager2:1.1.0'
+    implementation libs.activity.ktx
+    implementation libs.appcompat
+    implementation libs.collection.ktx
+    implementation libs.core.ktx
+    implementation libs.fragment.ktx
+    implementation libs.lifecycle.livedata.ktx
+    implementation libs.lifecycle.viewmodel.ktx
+    implementation libs.recyclerview
+    implementation libs.viewpager2
 
     // Material
-    implementation 'com.google.android.material:material:1.12.0'
+    implementation libs.material
 
     // OkHttp
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation(libs.okhttp)
 
     // Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    implementation libs.coroutines
 
     // Hilt
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation libs.hilt
+    kapt libs.hilt.compiler
 
     // RSS Parser
-    implementation 'com.prof18.rssparser:rssparser:6.0.8'
+    implementation libs.rssparser
 
     // testing
 
     // JUnit
-    testImplementation(platform("org.junit:junit-bom:$junit_version"))
+    testImplementation(platform(libs.junit.bom))
     // this is an aggregator module that includes the api, the params (for parametrized tests) and the engine
-    testImplementation "org.junit.jupiter:junit-jupiter"
+    testImplementation libs.junit.jupiter
 
     // Coroutines testing
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    testImplementation libs.coroutines.test
 
     // Mockk
-    testImplementation "io.mockk:mockk:$mockk_version"
+    testImplementation libs.mockk
 }
