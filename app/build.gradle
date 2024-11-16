@@ -1,7 +1,9 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'com.google.dagger.hilt.android'
+plugins {
+    alias libs.plugins.application
+    alias libs.plugins.kotlin
+    alias libs.plugins.kotlin.kapt
+    alias libs.plugins.hilt
+}
 
 // read properties file
 def appPropertiesFile = rootProject.file("properties/app.properties")
