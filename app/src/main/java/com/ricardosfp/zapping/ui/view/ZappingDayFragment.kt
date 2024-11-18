@@ -9,13 +9,13 @@ import com.ricardosfp.zapping.domain.model.*
 import com.ricardosfp.zapping.ui.adapter.*
 
 class ZappingDayFragment: Fragment() {
-    private lateinit var viewBinding: FragmentRssBinding
+    private lateinit var viewBinding: FragmentZappingDayBinding
     private lateinit var adapter: ZappingDayAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View { // Inflate the layout for this fragment
-        viewBinding = FragmentRssBinding.inflate(inflater, container, false)
+        viewBinding = FragmentZappingDayBinding.inflate(inflater, container, false)
         return viewBinding.root
     }
 
@@ -24,10 +24,13 @@ class ZappingDayFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         adapter = ZappingDayAdapter()
         viewBinding.recyclerView.adapter = adapter
-        viewBinding.recyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        viewBinding.recyclerView.layoutManager = LinearLayoutManager(
+            activity,
+            RecyclerView.VERTICAL,
+            false)
 
         // como resolver este Unchecked Cast ?
-        (arguments?.getSerializable(MATCHES_KEY) as? ArrayList<Match>)?.also {
+        (arguments?.getSerializable(MATCHES_KEY) as? List<Match>)?.also {
             adapter.setItems(it)
         }
 
@@ -36,10 +39,10 @@ class ZappingDayFragment: Fragment() {
     companion object {
         private const val MATCHES_KEY = "matches"
 
-        fun newInstance(matches: ArrayList<Match>): ZappingDayFragment {
+        fun newInstance(matches: List<Match>): ZappingDayFragment {
             val fragment = ZappingDayFragment()
             val bundle = Bundle()
-            bundle.putSerializable(MATCHES_KEY, matches)
+            bundle.putSerializable(MATCHES_KEY, ArrayList(matches))
             fragment.arguments = bundle
             return fragment
         }

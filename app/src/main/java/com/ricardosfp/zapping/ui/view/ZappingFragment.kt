@@ -9,8 +9,6 @@ import com.google.android.material.snackbar.*
 import com.google.android.material.tabs.*
 import com.ricardosfp.zapping.R
 import com.ricardosfp.zapping.databinding.*
-import com.ricardosfp.zapping.domain.model.*
-import com.ricardosfp.zapping.infrastructure.model.*
 import com.ricardosfp.zapping.ui.adapter.*
 import com.ricardosfp.zapping.ui.viewmodel.zapping.*
 import com.ricardosfp.zapping.ui.viewmodel.zapping.model.*
@@ -58,33 +56,43 @@ class ZappingFragment: Fragment() {
         viewModel.matchesLiveData.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is GetMatchesSuccess -> {
-                    Snackbar.make(viewBinding.fragmentRssCoordinatorLayout, R.string.match_list_update_success, BaseTransientBottomBar.LENGTH_LONG)
-                        .show()
+                    Snackbar.make(
+                        viewBinding.fragmentRssCoordinatorLayout,
+                        R.string.match_list_update_success,
+                        BaseTransientBottomBar.LENGTH_LONG)
+                            .show()
 
                     // now that we have the matches assigned to days we can instantiate the FragmentStateAdapter
                     // maybe unregister this observer?
                     viewPager.adapter = ZappingPagerAdapter(this, response.dayMap)
-                    // todo this below is confusing
 
-                    val mapEntryList: List<Map.Entry<Date, ArrayList<Match>>> = ArrayList<Map.Entry<Date, ArrayList<Match>>>(response.dayMap.entries)
+                    val mapEntryList = response.dayMap.entries.toList()
 
                     // todo move date formatting to the DateConverter
-                    TabLayoutMediator(viewBinding.tabLayout, viewPager) { tab: TabLayout.Tab, position: Int -> tab.text = dateFormat.format(mapEntryList[position].key) }.attach()
-                    mapEntryList.forEach { dateArrayListEntry ->
-                        dateArrayListEntry.value.forEach { match -> // schedule an alarm for that time
-                            val text = match.originalText
-                            val date = match.date
+                    TabLayoutMediator(
+                        viewBinding.tabLayout,
+                        viewPager) { tab: TabLayout.Tab, position: Int ->
+                        tab.text = dateFormat.format(mapEntryList[position].key)
+                    }.attach()
 
-                            // todo should this be done here? I don't think so
-                            viewModel.scheduleAlarm(Alarm(text, date))
-                        }
-                    }
+//                    mapEntryList.forEach { dateArrayListEntry ->
+//                        dateArrayListEntry.value.forEach { match -> // schedule an alarm for that time
+//                            val text = match.originalText
+//                            val date = match.date
+//
+//                            // todo should this be done here? I don't think so
+//                            viewModel.scheduleAlarm(Alarm(text, date))
+//                        }
+//                    }
                 }
 
                 is GetMatchesError -> {
                     // show some error. Do it here or leave it to one of the DayFragment
-                    Snackbar.make(viewBinding.fragmentRssCoordinatorLayout, R.string.match_list_update_error, BaseTransientBottomBar.LENGTH_LONG)
-                        .show()
+                    Snackbar.make(
+                        viewBinding.fragmentRssCoordinatorLayout,
+                        R.string.match_list_update_error,
+                        BaseTransientBottomBar.LENGTH_LONG)
+                            .show()
                 }
             }
         }

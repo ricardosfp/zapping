@@ -3,7 +3,7 @@ package com.ricardosfp.zapping.ui.viewmodel.zapping
 import androidx.lifecycle.*
 import com.ricardosfp.zapping.*
 import com.ricardosfp.zapping.data.repository.contract.*
-import com.ricardosfp.zapping.data.repository.model.*
+import com.ricardosfp.zapping.data.repository.model.result.*
 import com.ricardosfp.zapping.domain.match.*
 import com.ricardosfp.zapping.domain.model.*
 import com.ricardosfp.zapping.infrastructure.alarm.*
@@ -15,6 +15,7 @@ import kotlinx.coroutines.*
 import java.util.*
 import javax.inject.*
 
+// todo test
 @HiltViewModel
 class ZappingViewModel @Inject constructor(
     private val zappingRepository: ZappingRepository,
@@ -44,12 +45,17 @@ class ZappingViewModel @Inject constructor(
                             } else null
                         }
 
-                        // todo matches should be ordered in crescent order. We have no guarantee that they come ordered
+                        // order matches by date. Do not assume that they come ordered
+                        // if we order the list of matches then we do not need to order the map
+                        // it is simpler this way
+                        val sortedMatches = matches.sortedBy {
+                            it.date
+                        }
 
-                        val dayMap = TreeMap<Date, ArrayList<Match>>()
-                        matches.forEach { match ->
+                        val dayMap = mutableMapOf<Date, MutableList<Match>>()
+                        sortedMatches.forEach { match ->
                             dayMap.computeIfAbsent(dateUtils.dateAtMidnight(match.date)) {
-                                ArrayList()
+                                mutableListOf()
                             }.add(match)
                         }
 
