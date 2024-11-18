@@ -5,6 +5,12 @@ import java.util.*
 
 sealed class GetMatchesResult
 
-data class GetMatchesSuccess(val dayMap: TreeMap<Date, ArrayList<Match>>): GetMatchesResult()
+// this uses a MutableMap to guarantee key order
+// todo this does not stop someone from modifying a Date, or from casting a list of matches to modify it
+// todo this is not optimal at all because it still holds two "equal" objects
+data class GetMatchesSuccess(private val dayMapParameter: MutableMap<Date, MutableList<Match>>):
+    GetMatchesResult() {
+    val dayMap: Map<Date, List<Match>> = Collections.unmodifiableMap(dayMapParameter)
+}
 
 data object GetMatchesError: GetMatchesResult()

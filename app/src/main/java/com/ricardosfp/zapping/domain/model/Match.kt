@@ -7,6 +7,7 @@ import java.util.*
 data class Match(
     val homeTeam: String,
     val awayTeam: String,
+    // todo use immutable classes for dates
     val date: Date,
     val channel: String,
     val originalText: String

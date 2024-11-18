@@ -6,9 +6,9 @@ import com.ricardosfp.zapping.domain.model.*
 import com.ricardosfp.zapping.ui.view.*
 import java.util.*
 
-class ZappingPagerAdapter(fragment: Fragment, private var map: TreeMap<Date, ArrayList<Match>>):
+class ZappingPagerAdapter(fragment: Fragment, private var map: Map<Date, List<Match>>):
     FragmentStateAdapter(fragment) {
-    private var mapEntryList: List<Map.Entry<Date, ArrayList<Match>>> = ArrayList<Map.Entry<Date, ArrayList<Match>>>(map.entries)
+    private var mapEntryList = map.entries.toList()
 
     override fun createFragment(position: Int): Fragment {
         return ZappingDayFragment.newInstance(mapEntryList[position].value)
