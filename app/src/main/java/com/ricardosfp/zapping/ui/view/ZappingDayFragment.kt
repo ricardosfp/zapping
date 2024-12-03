@@ -29,7 +29,8 @@ class ZappingDayFragment: Fragment() {
             RecyclerView.VERTICAL,
             false)
 
-        // como resolver este Unchecked Cast ?
+        // how to solve this Unchecked Cast ?
+        // todo this should just be passed to the adapter's constructor
         (arguments?.getSerializable(MATCHES_KEY) as? List<Match>)?.also {
             adapter.setItems(it)
         }

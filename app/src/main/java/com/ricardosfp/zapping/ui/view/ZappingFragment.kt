@@ -4,27 +4,17 @@ import android.os.*
 import android.view.*
 import androidx.fragment.app.*
 import androidx.lifecycle.*
-import androidx.viewpager2.widget.*
-import com.google.android.material.snackbar.*
-import com.google.android.material.tabs.*
 import com.ricardosfp.zapping.R
 import com.ricardosfp.zapping.databinding.*
-import com.ricardosfp.zapping.ui.adapter.*
+import com.ricardosfp.zapping.ui.view.ZappingDataReadyFragment.Companion.DAY_MAP_KEY
 import com.ricardosfp.zapping.ui.viewmodel.zapping.*
 import com.ricardosfp.zapping.ui.viewmodel.zapping.model.*
 import dagger.hilt.android.*
-import java.text.*
-import java.util.*
 
 @AndroidEntryPoint
 class ZappingFragment: Fragment() {
     private lateinit var viewBinding: FragmentZappingBinding
-    private lateinit var viewPager: ViewPager2
     private lateinit var viewModel: ZappingViewModel
-
-    companion object {
-        private val dateFormat = SimpleDateFormat("EEEE, MMM d", Locale.ENGLISH)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +27,6 @@ class ZappingFragment: Fragment() {
     ): View {
         // Inflate the layout for this fragment
         viewBinding = FragmentZappingBinding.inflate(inflater, container, false)
-        viewPager = viewBinding.viewPager
 
         return viewBinding.root
     }
@@ -53,27 +42,29 @@ class ZappingFragment: Fragment() {
         // when having a FragmentTransaction to another Fragment and then popping the back stack).
         // In that case the view gets destroyed but the Fragment itself does not get destroyed.
         // So, in that case, the Observer would not be called again
-        viewModel.matchesLiveData.observe(viewLifecycleOwner) { response ->
+        viewModel.uiStateLiveData.observe(viewLifecycleOwner) { response ->
             when (response) {
-                is GetMatchesSuccess -> {
-                    Snackbar.make(
-                        viewBinding.fragmentRssCoordinatorLayout,
-                        R.string.match_list_update_success,
-                        BaseTransientBottomBar.LENGTH_LONG)
-                            .show()
+                UiIdle, UiLoading -> {
+                    childFragmentManager.beginTransaction().replace(
+                        viewBinding.zappingFragmentContainer.id,
+                        ZappingLoadingFragment::class.java,
+                        null)
+                            .commit()
+                }
 
-                    // now that we have the matches assigned to days we can instantiate the FragmentStateAdapter
-                    // maybe unregister this observer?
-                    viewPager.adapter = ZappingPagerAdapter(this, response.dayMap)
+                is UiDataReady -> {
 
-                    val mapEntryList = response.dayMap.entries.toList()
+                    // todo if the fragment already exists then maybe we should not replace it
+                    if (savedInstanceState == null) {
+                        val bundle = Bundle()
+                        bundle.putSerializable(DAY_MAP_KEY, LinkedHashMap(response.dayMap))
 
-                    // todo move date formatting to the DateConverter
-                    TabLayoutMediator(
-                        viewBinding.tabLayout,
-                        viewPager) { tab: TabLayout.Tab, position: Int ->
-                        tab.text = dateFormat.format(mapEntryList[position].key)
-                    }.attach()
+                        childFragmentManager.beginTransaction().replace(
+                            viewBinding.zappingFragmentContainer.id,
+                            ZappingDataReadyFragment::class.java,
+                            bundle)
+                                .commit()
+                    }
 
 //                    mapEntryList.forEach { dateArrayListEntry ->
 //                        dateArrayListEntry.value.forEach { match -> // schedule an alarm for that time
@@ -86,13 +77,13 @@ class ZappingFragment: Fragment() {
 //                    }
                 }
 
-                is GetMatchesError -> {
+                is UiError -> {
                     // show some error. Do it here or leave it to one of the DayFragment
-                    Snackbar.make(
-                        viewBinding.fragmentRssCoordinatorLayout,
-                        R.string.match_list_update_error,
-                        BaseTransientBottomBar.LENGTH_LONG)
-                            .show()
+                    childFragmentManager.beginTransaction().replace(
+                        viewBinding.zappingFragmentContainer.id,
+                        ZappingErrorFragment::class.java,
+                        null)
+                            .commit()
                 }
             }
         }

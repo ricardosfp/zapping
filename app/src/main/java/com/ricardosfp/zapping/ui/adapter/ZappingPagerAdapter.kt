@@ -17,5 +17,4 @@ class ZappingPagerAdapter(fragment: Fragment, private var map: Map<Date, List<Ma
     override fun getItemCount(): Int {
         return map.size
     }
-
 }
