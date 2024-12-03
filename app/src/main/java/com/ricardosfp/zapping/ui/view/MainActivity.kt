@@ -18,8 +18,11 @@ class MainActivity: AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(viewBinding.fragmentFrame.id, ZappingFragment::class.java, null)
-                .commit()
+                    .replace(
+                        viewBinding.activityFragmentContainer.id,
+                        ZappingFragment::class.java,
+                        null)
+                    .commit()
         }
 
         setContentView(viewBinding.root)

@@ -4,10 +4,12 @@ import java.text.*
 import java.util.*
 import javax.inject.*
 
-// todo test this
+// todo test this. But, is there really something to test?
+// todo are the parse and format functions really necessary?
 @Singleton
 class DateUtilsImpl @Inject constructor(): DateUtils {
 
+    // use something that does not return null
     override fun parse(dateFormat: SimpleDateFormat, dateStringToParse: String): Date? {
         return dateFormat.parse(dateStringToParse)
     }

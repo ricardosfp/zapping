@@ -1,8 +1,9 @@
-apply plugin: 'com.android.application'
-// kapt for Hilt
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'com.google.dagger.hilt.android'
+plugins {
+    alias libs.plugins.application
+    alias libs.plugins.kotlin
+    alias libs.plugins.kotlin.kapt
+    alias libs.plugins.hilt
+}
 
 // read properties file
 def appPropertiesFile = rootProject.file("properties/app.properties")
@@ -14,14 +15,12 @@ appProperties.load(new FileInputStream(appPropertiesFile))
 android {
     namespace 'com.ricardosfp.zapping'
 
-    compileSdkVersion 33
-
-
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.ricardosfp.zapping"
         minSdkVersion 24
-        targetSdkVersion 29
+        targetSdk 35
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -42,34 +41,56 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
     }
 }
 
 dependencies {
 
-    def lifecycle_version = "2.6.1"
-    def hilt_version = "2.45"
-
     // Jetpack
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.core:core-ktx:1.10.0'
-    implementation 'androidx.activity:activity-ktx:1.7.0'
-    implementation 'androidx.fragment:fragment-ktx:1.5.6'
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
-    implementation 'androidx.preference:preference-ktx:1.2.0'
-    implementation 'androidx.collection:collection-ktx:1.2.0'
-    implementation 'androidx.recyclerview:recyclerview:1.3.0'
-    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation libs.activity.ktx
+    implementation libs.appcompat
+    implementation libs.collection.ktx
+    implementation libs.core.ktx
+    implementation libs.fragment.ktx
+    implementation libs.lifecycle.livedata.ktx
+    implementation libs.lifecycle.viewmodel.ktx
+    implementation libs.recyclerview
+    implementation libs.viewpager2
 
-    implementation 'com.google.android.material:material:1.8.0'
+    // Material
+    implementation libs.material
+
+    // OkHttp
+    implementation(libs.okhttp)
+
+    // Coroutines
+    implementation libs.coroutines
 
     // Hilt
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation libs.hilt
+    kapt libs.hilt.compiler
 
     // RSS Parser
-    implementation 'com.prof18.rssparser:rssparser:5.0.2'
+    implementation libs.rssparser
+
+    // testing
+
+    // JUnit
+    testImplementation(platform(libs.junit.bom))
+    // this is an aggregator module that includes the api, the params (for parametrized tests) and the engine
+    testImplementation libs.junit.jupiter
+
+    // Coroutines testing
+    testImplementation libs.coroutines.test
+
+    // Mockk
+    testImplementation libs.mockk
 }
