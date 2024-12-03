@@ -24,15 +24,16 @@ class ZappingViewModel @Inject constructor(
     private val matchParser: MatchParser
 ): ViewModel() {
 
-    private val _matchesLiveData = MutableLiveData<GetMatchesResult>()
-    val matchesLiveData: LiveData<GetMatchesResult> = _matchesLiveData
+    private val _uiStateLiveData = MutableLiveData<UiState>(UiIdle)
+    val uiStateLiveData: LiveData<UiState> = _uiStateLiveData
 
     fun getMatches() {
+        _uiStateLiveData.value = UiLoading
         viewModelScope.launch {
             val response = zappingRepository.getArticles(BuildConfig.ZAPPING_URL)
 
             withContext(Dispatchers.Main) {
-                _matchesLiveData.value = when (response) {
+                _uiStateLiveData.value = when (response) {
                     is GetArticlesSuccess -> {
 
                         // todo this should be done in a future Use Case, not here, to avoid calling the repository,
@@ -59,11 +60,11 @@ class ZappingViewModel @Inject constructor(
                             }.add(match)
                         }
 
-                        GetMatchesSuccess(dayMap)
+                        UiDataReady(dayMap)
                     }
 
                     is GetArticlesError -> {
-                        GetMatchesError
+                        UiError
                     }
                 }
             }
