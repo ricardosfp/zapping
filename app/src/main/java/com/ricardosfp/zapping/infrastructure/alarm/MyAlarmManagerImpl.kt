@@ -1,20 +1,27 @@
 package com.ricardosfp.zapping.infrastructure.alarm
 
-import android.app.*
-import android.content.*
-import android.os.*
-import android.util.*
-import com.ricardosfp.zapping.infrastructure.*
-import com.ricardosfp.zapping.infrastructure.model.*
-import com.ricardosfp.zapping.infrastructure.util.*
-import dagger.hilt.android.qualifiers.*
-import kotlinx.coroutines.*
-import java.util.*
-import javax.inject.*
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.os.Bundle
+import android.util.Log
+import com.ricardosfp.zapping.infrastructure.AlarmReceiver
+import com.ricardosfp.zapping.infrastructure.ApplicationClass
+import com.ricardosfp.zapping.infrastructure.model.Alarm
+import com.ricardosfp.zapping.infrastructure.util.ObjectToByte
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.Calendar
+import javax.inject.Inject
+import javax.inject.Singleton
 
 // todo test
 @Singleton
-class MyAlarmManagerImpl @Inject constructor(@ApplicationContext val context: Context): MyAlarmManager {
+class MyAlarmManagerImpl @Inject constructor(@ApplicationContext val context: Context):
+    MyAlarmManager {
 
     companion object {
         // alarm advance in minutes
@@ -51,7 +58,11 @@ class MyAlarmManagerImpl @Inject constructor(@ApplicationContext val context: Co
             // https://stackoverflow.com/questions/17569896/android-alarmmanager-is-there-a-way-to-cancell-all-the-alarms-set
             // https://stackoverflow.com/questions/27637744/cancel-all-the-alarms-set-using-alarmmanager?noredirect=1&lq=1
             // I have to use different request codes or else each pending intent overwrites the previous
-            val alarmPendingIntent = PendingIntent.getBroadcast(context, alarm.matchText.hashCode(), alarmIntent, PendingIntent.FLAG_IMMUTABLE)
+            val alarmPendingIntent = PendingIntent.getBroadcast(
+                context,
+                alarm.matchText.hashCode(),
+                alarmIntent,
+                PendingIntent.FLAG_IMMUTABLE)
 
             alarmTime.add(Calendar.MINUTE, ALARM_ADVANCE_MINUTES)
             Log.d("alarm", String.format("alarm set for %s", alarmTime.time.toString()))
@@ -60,13 +71,22 @@ class MyAlarmManagerImpl @Inject constructor(@ApplicationContext val context: Co
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 // this could be called in the constructor, because it does not change during the lifetime of the app
                 if (alarmMgr.canScheduleExactAlarms()) {
-                    alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime.timeInMillis, alarmPendingIntent) // alarmMgr.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 15000, alarmPendingIntent);
+                    alarmMgr.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        alarmTime.timeInMillis,
+                        alarmPendingIntent) // alarmMgr.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 15000, alarmPendingIntent);
                 } else {
                     // schedule inexact alarms?
-                    alarmMgr.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime.timeInMillis, alarmPendingIntent)
+                    alarmMgr.setAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        alarmTime.timeInMillis,
+                        alarmPendingIntent)
                 }
             } else {
-                alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime.timeInMillis, alarmPendingIntent) // alarmMgr.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 15000, alarmPendingIntent);
+                alarmMgr.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    alarmTime.timeInMillis,
+                    alarmPendingIntent) // alarmMgr.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 15000, alarmPendingIntent);
             }
         }
     }

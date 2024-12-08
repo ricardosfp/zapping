@@ -1,13 +1,20 @@
 package com.ricardosfp.zapping.infrastructure.di
 
-import com.prof18.rssparser.*
-import com.ricardosfp.zapping.data.repository.contract.*
-import com.ricardosfp.zapping.data.repository.implementation.*
-import dagger.*
-import dagger.hilt.*
-import dagger.hilt.components.*
-import okhttp3.*
-import javax.inject.*
+import com.prof18.rssparser.RssParser
+import com.prof18.rssparser.RssParserBuilder
+import com.ricardosfp.zapping.data.repository.contract.MyHttpClient
+import com.ricardosfp.zapping.data.repository.contract.MyRssParser
+import com.ricardosfp.zapping.data.repository.contract.ZappingRepository
+import com.ricardosfp.zapping.data.repository.implementation.MyHttpClientImpl
+import com.ricardosfp.zapping.data.repository.implementation.MyRssParserImpl
+import com.ricardosfp.zapping.data.repository.implementation.ZappingRepositoryImpl
+import dagger.Binds
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)

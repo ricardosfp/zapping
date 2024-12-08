@@ -1,10 +1,15 @@
 package com.ricardosfp.zapping.data.repository.implementation
 
-import com.ricardosfp.zapping.data.repository.contract.*
-import com.ricardosfp.zapping.data.repository.model.result.*
-import kotlinx.coroutines.*
-import okhttp3.*
-import javax.inject.*
+import com.ricardosfp.zapping.data.repository.contract.MyHttpClient
+import com.ricardosfp.zapping.data.repository.model.result.HttpGetException
+import com.ricardosfp.zapping.data.repository.model.result.HttpGetSuccess
+import com.ricardosfp.zapping.data.repository.model.result.HttpGetUnsuccessfulResponse
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 class MyHttpClientImpl @Inject constructor(private val client: OkHttpClient): MyHttpClient {

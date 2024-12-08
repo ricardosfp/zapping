@@ -1,7 +1,7 @@
 package com.ricardosfp.zapping.infrastructure.util.date
 
-import java.text.*
-import java.util.*
+import java.text.SimpleDateFormat
+import java.util.Date
 
 interface DateUtils {
     fun parse(dateFormat: SimpleDateFormat, dateStringToParse: String): Date?

@@ -1,8 +1,10 @@
 package com.ricardosfp.zapping.infrastructure.util.date
 
-import java.text.*
-import java.util.*
-import javax.inject.*
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import javax.inject.Inject
+import javax.inject.Singleton
 
 // todo test this. But, is there really something to test?
 // todo are the parse and format functions really necessary?

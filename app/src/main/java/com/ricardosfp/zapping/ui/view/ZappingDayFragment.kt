@@ -1,12 +1,15 @@
 package com.ricardosfp.zapping.ui.view
 
-import android.os.*
-import android.view.*
-import androidx.fragment.app.*
-import androidx.recyclerview.widget.*
-import com.ricardosfp.zapping.databinding.*
-import com.ricardosfp.zapping.domain.model.*
-import com.ricardosfp.zapping.ui.adapter.*
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.ricardosfp.zapping.databinding.FragmentZappingDayBinding
+import com.ricardosfp.zapping.domain.model.Match
+import com.ricardosfp.zapping.ui.adapter.ZappingDayAdapter
 
 class ZappingDayFragment: Fragment() {
     private lateinit var viewBinding: FragmentZappingDayBinding

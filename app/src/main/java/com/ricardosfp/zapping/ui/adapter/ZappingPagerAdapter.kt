@@ -1,14 +1,15 @@
 package com.ricardosfp.zapping.ui.adapter
 
-import androidx.fragment.app.*
-import androidx.viewpager2.adapter.*
-import com.ricardosfp.zapping.domain.model.*
-import com.ricardosfp.zapping.ui.view.*
-import java.util.*
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.ricardosfp.zapping.domain.model.Match
+import com.ricardosfp.zapping.ui.view.ZappingDayFragment
+import java.util.Date
 
 class ZappingPagerAdapter(fragment: Fragment, private var map: Map<Date, List<Match>>):
     FragmentStateAdapter(fragment) {
-    private var mapEntryList = map.entries.toList()
+
+    private val mapEntryList = map.entries.toList()
 
     override fun createFragment(position: Int): Fragment {
         return ZappingDayFragment.newInstance(mapEntryList[position].value)

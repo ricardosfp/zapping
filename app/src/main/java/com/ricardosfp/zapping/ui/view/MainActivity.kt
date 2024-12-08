@@ -1,11 +1,12 @@
 package com.ricardosfp.zapping.ui.view
 
-import android.os.*
-import android.view.*
-import androidx.appcompat.app.*
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.ricardosfp.zapping.R
-import com.ricardosfp.zapping.databinding.*
-import dagger.hilt.android.*
+import com.ricardosfp.zapping.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity: AppCompatActivity() {

@@ -1,15 +1,21 @@
 package com.ricardosfp.zapping.ui.view
 
-import android.os.*
-import android.view.*
-import androidx.fragment.app.*
-import androidx.lifecycle.*
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.ricardosfp.zapping.R
-import com.ricardosfp.zapping.databinding.*
+import com.ricardosfp.zapping.databinding.FragmentZappingBinding
 import com.ricardosfp.zapping.ui.view.ZappingDataReadyFragment.Companion.DAY_MAP_KEY
-import com.ricardosfp.zapping.ui.viewmodel.zapping.*
-import com.ricardosfp.zapping.ui.viewmodel.zapping.model.*
-import dagger.hilt.android.*
+import com.ricardosfp.zapping.ui.viewmodel.zapping.ZappingViewModel
+import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiDataReady
+import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiError
+import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiIdle
+import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiLoading
+import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ZappingFragment: Fragment() {

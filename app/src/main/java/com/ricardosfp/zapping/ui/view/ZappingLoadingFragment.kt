@@ -1,9 +1,11 @@
 package com.ricardosfp.zapping.ui.view
 
-import android.os.*
-import android.view.*
-import androidx.fragment.app.*
-import com.ricardosfp.zapping.*
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.ricardosfp.zapping.R
 
 class ZappingLoadingFragment: Fragment() {
 

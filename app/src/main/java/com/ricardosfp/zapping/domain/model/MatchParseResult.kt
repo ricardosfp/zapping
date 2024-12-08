@@ -1,6 +1,6 @@
 package com.ricardosfp.zapping.domain.model
 
-import java.text.*
+import java.text.ParseException
 
 sealed class MatchParseResult
 

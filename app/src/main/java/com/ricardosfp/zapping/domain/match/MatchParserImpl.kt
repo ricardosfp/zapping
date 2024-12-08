@@ -1,11 +1,18 @@
 package com.ricardosfp.zapping.domain.match
 
-import com.ricardosfp.zapping.data.repository.model.*
-import com.ricardosfp.zapping.domain.model.*
-import com.ricardosfp.zapping.infrastructure.util.date.*
-import java.text.*
-import java.util.*
-import javax.inject.*
+import com.ricardosfp.zapping.data.repository.model.MyArticle
+import com.ricardosfp.zapping.domain.model.Match
+import com.ricardosfp.zapping.domain.model.MatchParseDateError
+import com.ricardosfp.zapping.domain.model.MatchParseOtherExceptionError
+import com.ricardosfp.zapping.domain.model.MatchParseResult
+import com.ricardosfp.zapping.domain.model.MatchParseSuccess
+import com.ricardosfp.zapping.domain.model.MatchParseTitleError
+import com.ricardosfp.zapping.infrastructure.util.date.DateUtils
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Locale
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 class MatchParserImpl @Inject constructor(
@@ -13,12 +20,12 @@ class MatchParserImpl @Inject constructor(
 ): MatchParser {
 
     companion object {
-        private val dateFormat = SimpleDateFormat("E, d MMM yyyy HH:mm:ss", Locale.ENGLISH)
+        private val DATE_FORMAT = SimpleDateFormat("E, d MMM yyyy HH:mm:ss", Locale.ENGLISH)
     }
 
     override fun parse(article: MyArticle): MatchParseResult {
         return try {
-            val date = dateUtils.parse(dateFormat, article.date)
+            val date = dateUtils.parse(DATE_FORMAT, article.date)
             val originalText = article.title
 
             if (date != null) {
@@ -33,7 +40,13 @@ class MatchParserImpl @Inject constructor(
                         if (homeTeam.isEmpty() || awayTeam.isEmpty() || channel.isEmpty()) {
                             MatchParseTitleError
                         } else {
-                            MatchParseSuccess(Match(homeTeam, awayTeam, date, channel, originalText))
+                            MatchParseSuccess(
+                                Match(
+                                    homeTeam,
+                                    awayTeam,
+                                    date,
+                                    channel,
+                                    originalText))
                         }
                     } else {
                         // not two teams

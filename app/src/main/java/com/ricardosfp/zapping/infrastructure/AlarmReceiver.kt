@@ -1,24 +1,28 @@
 package com.ricardosfp.zapping.infrastructure
 
-import android.*
-import android.content.*
-import android.content.pm.*
-import android.util.*
-import androidx.core.app.*
-import com.ricardosfp.zapping.infrastructure.alarm.*
-import com.ricardosfp.zapping.infrastructure.model.*
+import android.Manifest
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.util.Log
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import com.ricardosfp.zapping.infrastructure.alarm.MyAlarmManager
+import com.ricardosfp.zapping.infrastructure.model.Alarm
 import com.ricardosfp.zapping.infrastructure.util.ObjectToByte.deserialize
-import java.util.concurrent.*
+import java.util.concurrent.ThreadLocalRandom
 
 // todo test
 class AlarmReceiver: BroadcastReceiver() {
 
     companion object {
-        private val className = AlarmReceiver::class.java.simpleName
+        private val CLASS_NAME = AlarmReceiver::class.java.simpleName
     }
-    
+
     override fun onReceive(context: Context, intent: Intent) {
-        Log.d(className, "alarm received")
+        Log.d(CLASS_NAME, "alarm received")
 
         val byteArray = intent.getByteArrayExtra(MyAlarmManager.BUNDLE_KEY)
 
@@ -31,11 +35,14 @@ class AlarmReceiver: BroadcastReceiver() {
                 // https://romannurik.github.io/AndroidAssetStudio/index.html
                 val builder = NotificationCompat.Builder(context, NotificationChannel.MATCH.id)
 //                    .setSmallIcon(R.drawable.)
-                    .setContentTitle(NotificationChannel.MATCH.getName(context))
-                    .setContentText(alarm.matchText)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setContentTitle(NotificationChannel.MATCH.getName(context))
+                        .setContentText(alarm.matchText)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
-                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+                ) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
@@ -46,7 +53,7 @@ class AlarmReceiver: BroadcastReceiver() {
                     return
                 }
                 NotificationManagerCompat.from(context)
-                    .notify(ThreadLocalRandom.current().nextInt(), builder.build())
+                        .notify(ThreadLocalRandom.current().nextInt(), builder.build())
 
             }
             catch (th: Throwable) {
@@ -57,6 +64,4 @@ class AlarmReceiver: BroadcastReceiver() {
             // todo report error
         }
     }
-
-
 }
