@@ -1,6 +1,6 @@
 package com.ricardosfp.zapping.infrastructure.alarm
 
-import com.ricardosfp.zapping.infrastructure.model.*
+import com.ricardosfp.zapping.infrastructure.model.Alarm
 
 // I added the "My" to avoid name collision with [android.app.AlarmManager]
 interface MyAlarmManager {

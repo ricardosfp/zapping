@@ -1,6 +1,6 @@
 package com.ricardosfp.zapping.data.repository.contract
 
-import com.ricardosfp.zapping.data.repository.model.result.*
+import com.ricardosfp.zapping.data.repository.model.result.RssParseResult
 
 /**
  * It has this name to avoid confusion with [com.prof18.rssparser.RssParser]

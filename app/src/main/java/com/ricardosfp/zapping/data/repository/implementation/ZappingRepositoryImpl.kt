@@ -1,9 +1,20 @@
 package com.ricardosfp.zapping.data.repository.implementation
 
-import com.ricardosfp.zapping.data.repository.contract.*
-import com.ricardosfp.zapping.data.repository.model.*
-import com.ricardosfp.zapping.data.repository.model.result.*
-import javax.inject.*
+import com.ricardosfp.zapping.data.repository.contract.MyHttpClient
+import com.ricardosfp.zapping.data.repository.contract.MyRssParser
+import com.ricardosfp.zapping.data.repository.contract.ZappingRepository
+import com.ricardosfp.zapping.data.repository.model.MyArticle
+import com.ricardosfp.zapping.data.repository.model.result.GetArticlesHttpError
+import com.ricardosfp.zapping.data.repository.model.result.GetArticlesOtherExceptionError
+import com.ricardosfp.zapping.data.repository.model.result.GetArticlesParseError
+import com.ricardosfp.zapping.data.repository.model.result.GetArticlesResult
+import com.ricardosfp.zapping.data.repository.model.result.GetArticlesSuccess
+import com.ricardosfp.zapping.data.repository.model.result.HttpGetError
+import com.ricardosfp.zapping.data.repository.model.result.HttpGetSuccess
+import com.ricardosfp.zapping.data.repository.model.result.RssParseError
+import com.ricardosfp.zapping.data.repository.model.result.RssParseSuccess
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 class ZappingRepositoryImpl @Inject constructor(

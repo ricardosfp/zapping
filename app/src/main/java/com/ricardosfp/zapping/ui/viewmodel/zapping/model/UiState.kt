@@ -1,7 +1,8 @@
 package com.ricardosfp.zapping.ui.viewmodel.zapping.model
 
-import com.ricardosfp.zapping.domain.model.*
-import java.util.*
+import com.ricardosfp.zapping.domain.model.Match
+import java.util.Collections
+import java.util.Date
 
 sealed class UiState
 

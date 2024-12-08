@@ -1,7 +1,7 @@
 package com.ricardosfp.zapping.domain.model
 
-import java.io.*
-import java.util.*
+import java.io.Serializable
+import java.util.Date
 
 // todo does this have to be Serializable?
 data class Match(

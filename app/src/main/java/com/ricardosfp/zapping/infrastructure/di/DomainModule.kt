@@ -1,10 +1,12 @@
 package com.ricardosfp.zapping.infrastructure.di
 
-import com.ricardosfp.zapping.domain.match.*
-import dagger.*
-import dagger.hilt.*
-import dagger.hilt.components.*
-import javax.inject.*
+import com.ricardosfp.zapping.domain.match.MatchParser
+import com.ricardosfp.zapping.domain.match.MatchParserImpl
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)

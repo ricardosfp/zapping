@@ -1,19 +1,30 @@
 package com.ricardosfp.zapping.ui.viewmodel.zapping
 
-import androidx.lifecycle.*
-import com.ricardosfp.zapping.*
-import com.ricardosfp.zapping.data.repository.contract.*
-import com.ricardosfp.zapping.data.repository.model.result.*
-import com.ricardosfp.zapping.domain.match.*
-import com.ricardosfp.zapping.domain.model.*
-import com.ricardosfp.zapping.infrastructure.alarm.*
-import com.ricardosfp.zapping.infrastructure.model.*
-import com.ricardosfp.zapping.infrastructure.util.date.*
-import com.ricardosfp.zapping.ui.viewmodel.zapping.model.*
-import dagger.hilt.android.lifecycle.*
-import kotlinx.coroutines.*
-import java.util.*
-import javax.inject.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ricardosfp.zapping.BuildConfig
+import com.ricardosfp.zapping.data.repository.contract.ZappingRepository
+import com.ricardosfp.zapping.data.repository.model.result.GetArticlesError
+import com.ricardosfp.zapping.data.repository.model.result.GetArticlesSuccess
+import com.ricardosfp.zapping.domain.match.MatchParser
+import com.ricardosfp.zapping.domain.model.Match
+import com.ricardosfp.zapping.domain.model.MatchParseSuccess
+import com.ricardosfp.zapping.infrastructure.alarm.MyAlarmManager
+import com.ricardosfp.zapping.infrastructure.model.Alarm
+import com.ricardosfp.zapping.infrastructure.util.date.DateUtils
+import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiDataReady
+import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiError
+import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiIdle
+import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiLoading
+import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.Date
+import javax.inject.Inject
 
 // todo test
 @HiltViewModel
