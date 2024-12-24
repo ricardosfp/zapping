@@ -1,14 +1,27 @@
 package com.ricardosfp.zapping.data.implementation
 
-import com.ricardosfp.zapping.data.repository.contract.*
-import com.ricardosfp.zapping.data.repository.implementation.*
-import com.ricardosfp.zapping.data.repository.model.*
-import com.ricardosfp.zapping.data.repository.model.result.*
-import io.mockk.*
-import kotlinx.coroutines.test.*
-import okhttp3.internal.*
-import org.junit.jupiter.api.*
-import org.junit.jupiter.api.Assertions.*
+import com.ricardosfp.zapping.data.repository.contract.MyHttpClient
+import com.ricardosfp.zapping.data.repository.contract.MyRssParser
+import com.ricardosfp.zapping.data.repository.implementation.ZappingRepositoryImpl
+import com.ricardosfp.zapping.data.repository.model.MyArticle
+import com.ricardosfp.zapping.data.repository.model.MyRssItem
+import com.ricardosfp.zapping.data.repository.model.result.GetArticlesHttpError
+import com.ricardosfp.zapping.data.repository.model.result.GetArticlesOtherExceptionError
+import com.ricardosfp.zapping.data.repository.model.result.GetArticlesParseError
+import com.ricardosfp.zapping.data.repository.model.result.GetArticlesSuccess
+import com.ricardosfp.zapping.data.repository.model.result.HttpGetException
+import com.ricardosfp.zapping.data.repository.model.result.HttpGetSuccess
+import com.ricardosfp.zapping.data.repository.model.result.HttpGetUnsuccessfulResponse
+import com.ricardosfp.zapping.data.repository.model.result.RssParseException
+import com.ricardosfp.zapping.data.repository.model.result.RssParseSuccess
+import io.mockk.coEvery
+import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
+import okhttp3.internal.immutableListOf
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertIterableEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class ZappingRepositoryImplTest {
 

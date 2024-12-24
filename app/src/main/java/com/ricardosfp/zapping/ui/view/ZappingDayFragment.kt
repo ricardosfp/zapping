@@ -4,44 +4,88 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.ricardosfp.zapping.databinding.FragmentZappingDayBinding
+import com.ricardosfp.zapping.R
 import com.ricardosfp.zapping.domain.model.Match
-import com.ricardosfp.zapping.ui.adapter.ZappingDayAdapter
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class ZappingDayFragment: Fragment() {
-    private lateinit var viewBinding: FragmentZappingDayBinding
-    private lateinit var adapter: ZappingDayAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View { // Inflate the layout for this fragment
-        viewBinding = FragmentZappingDayBinding.inflate(inflater, container, false)
-        return viewBinding.root
+    ): View {
+        // how to solve this Unchecked Cast ?
+        val context = context
+        val matches = arguments?.getSerializable(MATCHES_KEY) as? List<Match>
+
+        return if (context != null && matches != null) {
+            ComposeView(context).apply {
+                setContent {
+                    Surface(
+                        color = Color(1f, 1f, 1f)) {
+                        LazyColumn {
+                            items(matches) {
+                                Surface(
+                                    Modifier.padding(10.dp, 10.dp)) {
+                                    MatchLayout(it)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            inflater.inflate(R.layout.fragment_zapping_error, container, false)
+        }
     }
 
-    @SuppressWarnings("unchecked")
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        adapter = ZappingDayAdapter()
-        viewBinding.recyclerView.adapter = adapter
-        viewBinding.recyclerView.layoutManager = LinearLayoutManager(
-            activity,
-            RecyclerView.VERTICAL,
-            false)
-
-        // how to solve this Unchecked Cast ?
-        // todo this should just be passed to the adapter's constructor
-        (arguments?.getSerializable(MATCHES_KEY) as? List<Match>)?.also {
-            adapter.setItems(it)
+    @Composable
+    fun MatchLayout(match: Match) {
+        Column(
+            Modifier
+                    .background(Color(1f, 1f, 1f))) {
+            Text("${match.homeTeam} x ${match.awayTeam}", style = TEXT_STYLE)
+            Text(DATE_FORMAT.format(match.date), style = TEXT_STYLE)
+            Text(match.channel, style = TEXT_STYLE)
         }
+    }
 
+    @Preview
+    @Composable
+    private fun MatchLayout() {
+        Column(
+            Modifier
+                    .fillMaxSize()
+                    .background(Color(1f, 1f, 1f))
+                    .padding(10.dp, 10.dp)) {
+            Text("Valência x Porto", style = TEXT_STYLE)
+            Text("20:45", style = TEXT_STYLE)
+            Text("Sport Tv", style = TEXT_STYLE)
+        }
     }
 
     companion object {
+        private val DATE_FORMAT = SimpleDateFormat("HH:mm", Locale.ENGLISH)
         private const val MATCHES_KEY = "matches"
+
+        private val TEXT_STYLE = TextStyle(fontSize = 16.sp)
 
         fun newInstance(matches: List<Match>): ZappingDayFragment {
             val fragment = ZappingDayFragment()
