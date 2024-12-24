@@ -1,10 +1,12 @@
 plugins {
-    alias libs.plugins.application
-    alias libs.plugins.kotlin
-    alias libs.plugins.kotlin.kapt
-    alias libs.plugins.hilt
+    alias(libs.plugins.application)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.kotlin.kapt)
 }
 
+// todo close the stream. Make sure that it makes build fail if an error occurs
 // read properties file
 def appPropertiesFile = rootProject.file("properties/app.properties")
 
@@ -13,36 +15,36 @@ def appProperties = new Properties()
 appProperties.load(new FileInputStream(appPropertiesFile))
 
 android {
-    namespace 'com.ricardosfp.zapping'
-
-    compileSdk 35
+    namespace = 'com.ricardosfp.zapping'
+    compileSdk = 35
 
     defaultConfig {
-        applicationId "com.ricardosfp.zapping"
-        minSdkVersion 24
-        targetSdk 35
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        applicationId = "com.ricardosfp.zapping"
+        minSdk = 24
+        targetSdk = 35
+        versionCode = 1
+        versionName = "1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "ZAPPING_URL", appProperties.get("zapping.url"))
     }
 
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled = false
+            proguardFiles(getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro')
         }
     }
 
     buildFeatures {
-        viewBinding true
-        buildConfig true
+        buildConfig = true
+        compose = true
+        viewBinding = true
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_21
-        targetCompatibility JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     testOptions {
@@ -55,42 +57,48 @@ android {
 dependencies {
 
     // Jetpack
-    implementation libs.activity.ktx
-    implementation libs.appcompat
-    implementation libs.collection.ktx
-    implementation libs.core.ktx
-    implementation libs.fragment.ktx
-    implementation libs.lifecycle.livedata.ktx
-    implementation libs.lifecycle.viewmodel.ktx
-    implementation libs.recyclerview
-    implementation libs.viewpager2
+    implementation(libs.activity.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.collection.ktx)
+    implementation(libs.core.ktx)
+    implementation(libs.fragment.ktx)
+    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.recyclerview)
+    implementation(libs.viewpager2)
+
+    // Compose
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.material3)
+    implementation(libs.compose.tooling.preview)
+    debugImplementation(libs.compose.tooling)
 
     // Material
-    implementation libs.material
+    implementation(libs.material)
 
     // OkHttp
     implementation(libs.okhttp)
 
     // Coroutines
-    implementation libs.coroutines
+    implementation(libs.coroutines)
 
     // Hilt
-    implementation libs.hilt
-    kapt libs.hilt.compiler
+    implementation(libs.hilt)
+    kapt(libs.hilt.compiler)
 
     // RSS Parser
-    implementation libs.rssparser
+    implementation(libs.rssparser)
 
     // testing
 
     // JUnit
     testImplementation(platform(libs.junit.bom))
     // this is an aggregator module that includes the api, the params (for parametrized tests) and the engine
-    testImplementation libs.junit.jupiter
+    testImplementation(libs.junit.jupiter)
 
     // Coroutines testing
-    testImplementation libs.coroutines.test
+    testImplementation(libs.coroutines.test)
 
     // Mockk
-    testImplementation libs.mockk
+    testImplementation(libs.mockk)
 }

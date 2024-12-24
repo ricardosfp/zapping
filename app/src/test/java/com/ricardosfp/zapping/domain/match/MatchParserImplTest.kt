@@ -1,11 +1,14 @@
 package com.ricardosfp.zapping.domain.match
 
-import com.ricardosfp.zapping.data.repository.model.*
-import com.ricardosfp.zapping.domain.model.*
-import com.ricardosfp.zapping.infrastructure.util.date.*
-import org.junit.jupiter.api.*
-import org.junit.jupiter.api.Assertions.*
-import java.util.*
+import com.ricardosfp.zapping.data.repository.model.MyArticle
+import com.ricardosfp.zapping.domain.model.MatchParseDateError
+import com.ricardosfp.zapping.domain.model.MatchParseSuccess
+import com.ricardosfp.zapping.domain.model.MatchParseTitleError
+import com.ricardosfp.zapping.infrastructure.util.date.DateUtilsImpl
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import java.util.Date
 
 class MatchParserImplTest {
 
