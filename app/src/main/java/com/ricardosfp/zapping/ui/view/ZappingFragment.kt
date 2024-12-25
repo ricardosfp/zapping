@@ -39,11 +39,7 @@ class ZappingFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // todo this means that data is not fetched again when recovering from process death.
-        //  Implement a cache mechanism. See (refresh = false)
-        if (savedInstanceState == null) {
-            viewModel.getMatches()
-        }
+
         // this has to be done here with the view lifecycle to avoid a strange situation (for example,
         // when having a FragmentTransaction to another Fragment and then popping the back stack).
         // In that case the view gets destroyed but the Fragment itself does not get destroyed.
@@ -92,6 +88,12 @@ class ZappingFragment: Fragment() {
                             .commit()
                 }
             }
+        }
+
+        // todo this means that data is not fetched again when recovering from process death.
+        //  Implement a cache mechanism. See (refresh = false)
+        if (savedInstanceState == null) {
+            viewModel.getMatches()
         }
     }
 
