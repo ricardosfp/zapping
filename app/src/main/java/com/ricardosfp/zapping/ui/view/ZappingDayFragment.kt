@@ -21,7 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
-import com.ricardosfp.zapping.R
 import com.ricardosfp.zapping.domain.model.Match
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -32,14 +31,13 @@ class ZappingDayFragment: Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         // how to solve this Unchecked Cast ?
-        val context = context
         val matches = arguments?.getSerializable(MATCHES_KEY) as? List<Match>
 
-        return if (context != null && matches != null) {
-            ComposeView(context).apply {
-                setContent {
-                    Surface(
-                        color = Color(1f, 1f, 1f)) {
+        return ComposeView(requireContext()).apply {
+            setContent {
+                Surface(
+                    color = Color.White) {
+                    if (matches != null) {
                         LazyColumn {
                             items(matches) {
                                 Surface(
@@ -48,44 +46,16 @@ class ZappingDayFragment: Fragment() {
                                 }
                             }
                         }
+                    } else {
+                        ErrorText()
                     }
                 }
             }
-        } else {
-            inflater.inflate(R.layout.fragment_zapping_error, container, false)
-        }
-    }
-
-    @Composable
-    fun MatchLayout(match: Match) {
-        Column(
-            Modifier
-                    .background(Color(1f, 1f, 1f))) {
-            Text("${match.homeTeam} x ${match.awayTeam}", style = TEXT_STYLE)
-            Text(DATE_FORMAT.format(match.date), style = TEXT_STYLE)
-            Text(match.channel, style = TEXT_STYLE)
-        }
-    }
-
-    @Preview
-    @Composable
-    private fun MatchLayout() {
-        Column(
-            Modifier
-                    .fillMaxSize()
-                    .background(Color(1f, 1f, 1f))
-                    .padding(10.dp, 10.dp)) {
-            Text("Valência x Porto", style = TEXT_STYLE)
-            Text("20:45", style = TEXT_STYLE)
-            Text("Sport Tv", style = TEXT_STYLE)
         }
     }
 
     companion object {
-        private val DATE_FORMAT = SimpleDateFormat("HH:mm", Locale.ENGLISH)
         private const val MATCHES_KEY = "matches"
-
-        private val TEXT_STYLE = TextStyle(fontSize = 16.sp)
 
         fun newInstance(matches: List<Match>): ZappingDayFragment {
             val fragment = ZappingDayFragment()
@@ -94,5 +64,33 @@ class ZappingDayFragment: Fragment() {
             fragment.arguments = bundle
             return fragment
         }
+    }
+}
+
+private val DATE_FORMAT = SimpleDateFormat("HH:mm", Locale.ENGLISH)
+private val TEXT_STYLE = TextStyle(fontSize = 16.sp, color = Color.Black)
+
+@Composable
+private fun MatchLayout(match: Match) {
+    Column(
+        Modifier
+                .background(Color.White)) {
+        Text("${match.homeTeam} x ${match.awayTeam}", style = TEXT_STYLE)
+        Text(DATE_FORMAT.format(match.date), style = TEXT_STYLE)
+        Text(match.channel, style = TEXT_STYLE)
+    }
+}
+
+@Preview
+@Composable
+private fun MatchLayoutPreview() {
+    Column(
+        Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(10.dp, 10.dp)) {
+        Text("Valência x Porto", style = TEXT_STYLE)
+        Text("20:45", style = TEXT_STYLE)
+        Text("Sport Tv", style = TEXT_STYLE)
     }
 }
