@@ -70,8 +70,7 @@ private fun ErrorTextPreview() {
                 modifier = Modifier.constrainAs(text) {
                     centerTo(parent)
                     width = Dimension.percent(0.8F)
-                },
-                style = TEXT_STYLE
+                }, style = TEXT_STYLE
             )
         }
     }
