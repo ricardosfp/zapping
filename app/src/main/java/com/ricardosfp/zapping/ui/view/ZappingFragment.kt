@@ -67,16 +67,6 @@ class ZappingFragment: Fragment() {
                             bundle)
                                 .commit()
                     }
-
-//                    mapEntryList.forEach { dateArrayListEntry ->
-//                        dateArrayListEntry.value.forEach { match -> // schedule an alarm for that time
-//                            val text = match.originalText
-//                            val date = match.date
-//
-//                            // todo should this be done here? I don't think so
-//                            viewModel.scheduleAlarm(Alarm(text, date))
-//                        }
-//                    }
                 }
 
                 is UiError -> {
