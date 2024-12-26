@@ -1,9 +1,5 @@
 package com.ricardosfp.zapping.ui.view
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,54 +11,59 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.Fragment
 import com.ricardosfp.zapping.domain.model.Match
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
-class ZappingDayFragment: Fragment() {
+private val matchListSample = listOf(
+    Match(
+        homeTeam = "Valência",
+        awayTeam = "Porto",
+        date = Date(2024 - 1900, 10, 10, 10, 10),
+        channel = "Sport tv",
+        originalText = ""),
+    Match(
+        homeTeam = "Estrela da Amadora",
+        awayTeam = "Beira-Mar",
+        date = Date(2024 - 1900, 10, 10, 15, 0),
+        channel = "Sport tv",
+        originalText = "")
+)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        // how to solve this Unchecked Cast ?
-        val matches = arguments?.getSerializable(MATCHES_KEY) as? List<Match>
-
-        return ComposeView(requireContext()).apply {
-            setContent {
+@Composable
+fun ZappingDay(matches: List<Match>) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Color.White) {
+        LazyColumn {
+            items(matches) {
                 Surface(
-                    color = Color.White) {
-                    if (matches != null) {
-                        LazyColumn {
-                            items(matches) {
-                                Surface(
-                                    Modifier.padding(10.dp, 10.dp)) {
-                                    MatchLayout(it)
-                                }
-                            }
-                        }
-                    } else {
-                        ErrorText()
-                    }
+                    Modifier.padding(10.dp, 10.dp)) {
+                    MatchLayout(it)
                 }
             }
         }
     }
+}
 
-    companion object {
-        private const val MATCHES_KEY = "matches"
-
-        fun newInstance(matches: List<Match>): ZappingDayFragment {
-            val fragment = ZappingDayFragment()
-            val bundle = Bundle()
-            bundle.putSerializable(MATCHES_KEY, ArrayList(matches))
-            fragment.arguments = bundle
-            return fragment
+@Preview
+@Composable
+private fun ZappingDayPreview() {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Color.White) {
+        LazyColumn {
+            items(matchListSample) {
+                Surface(
+                    Modifier.padding(10.dp, 10.dp)) {
+                    MatchLayout(it)
+                }
+            }
         }
     }
 }
