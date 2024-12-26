@@ -38,6 +38,7 @@ private val matchListSample = listOf(
 @Composable
 fun ZappingDay(matches: List<Match>) {
     Surface(
+        modifier = Modifier.fillMaxSize(),
         color = Color.White) {
         LazyColumn {
             items(matches) {
