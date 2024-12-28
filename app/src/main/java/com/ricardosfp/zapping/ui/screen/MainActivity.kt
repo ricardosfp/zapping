@@ -1,4 +1,4 @@
-package com.ricardosfp.zapping.ui.view
+package com.ricardosfp.zapping.ui.screen
 
 import android.os.Bundle
 import android.view.Menu
@@ -6,6 +6,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.ricardosfp.zapping.R
 import com.ricardosfp.zapping.databinding.ActivityMainBinding
+import com.ricardosfp.zapping.ui.composable.ZappingFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

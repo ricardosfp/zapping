@@ -1,4 +1,4 @@
-package com.ricardosfp.zapping.ui.view
+package com.ricardosfp.zapping.ui.composable
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ricardosfp.zapping.R
 import com.ricardosfp.zapping.databinding.FragmentZappingBinding
-import com.ricardosfp.zapping.ui.view.ZappingDataReadyFragment.Companion.DAY_MAP_KEY
 import com.ricardosfp.zapping.ui.viewmodel.zapping.ZappingViewModel
 import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiDataReady
 import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiError
@@ -47,35 +46,22 @@ class ZappingFragment: Fragment() {
         viewModel.uiStateLiveData.observe(viewLifecycleOwner) { response ->
             when (response) {
                 UiIdle, UiLoading -> {
-                    childFragmentManager.beginTransaction().replace(
-                        viewBinding.zappingFragmentContainer.id,
-                        ZappingLoadingFragment::class.java,
-                        null)
-                            .commit()
+                    viewBinding.zappingComposeView.setContent {
+                        LoadingWidget()
+                    }
                 }
 
                 is UiDataReady -> {
 
-                    // todo if the fragment already exists then maybe we should not replace it
-                    if (savedInstanceState == null) {
-                        val bundle = Bundle()
-                        bundle.putSerializable(DAY_MAP_KEY, LinkedHashMap(response.dayMap))
-
-                        childFragmentManager.beginTransaction().replace(
-                            viewBinding.zappingFragmentContainer.id,
-                            ZappingDataReadyFragment::class.java,
-                            bundle)
-                                .commit()
+                    viewBinding.zappingComposeView.setContent {
+                        DataReadyWidget(response.dayMap)
                     }
                 }
 
-                is UiError -> {
-                    // show some error. Do it here or leave it to one of the DayFragment
-                    childFragmentManager.beginTransaction().replace(
-                        viewBinding.zappingFragmentContainer.id,
-                        ZappingErrorFragment::class.java,
-                        null)
-                            .commit()
+                UiError -> {
+                    viewBinding.zappingComposeView.setContent {
+                        ErrorWidget()
+                    }
                 }
             }
         }

@@ -1,9 +1,5 @@
-package com.ricardosfp.zapping.ui.view
+package com.ricardosfp.zapping.ui.composable
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -15,54 +11,75 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.Fragment
 import com.ricardosfp.zapping.R
 import com.ricardosfp.zapping.domain.model.Match
 import com.ricardosfp.zapping.ui.viewmodel.zapping.model.DateWithFormattedString
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalDateTime
 
-class ZappingDataReadyFragment: Fragment() {
+@Composable
+fun DataReadyWidget(dayMap: Map<DateWithFormattedString, List<Match>>) {
+    Surface(
+        color = Color.White) {
+        Column {
+            val pagerState = rememberPagerState(
+                initialPage = 0,
+                pageCount = { dayMap.size })
 
-    companion object {
-        const val DAY_MAP_KEY = "DAY_MAP_KEY"
-    }
+            val mapEntryList by remember { mutableStateOf(dayMap.entries.toList()) }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        val dayMap = (arguments?.getSerializable(DAY_MAP_KEY) as? Map<DateWithFormattedString, List<Match>>)
-            ?: return ComposeView(requireContext()).apply {
-                setContent {
-                    Surface(color = Color.White) {
-                        ErrorText()
-                    }
-                }
+            TabLayout(mapEntryList, pagerState)
+            HorizontalPager(state = pagerState) { index ->
+                ZappingDay(mapEntryList[index].value)
             }
+        }
+    }
+}
 
-        // todo what if the list is empty?
-        val mapEntryList = dayMap.entries.toList()
+@Preview
+@Composable
+private fun DataReadyPreview() {
+    val dayMap = mapOf(
+        DateWithFormattedString(
+            LocalDate.of(
+                2024,
+                12,
+                28),
+            "sexta, 28 de dezembro") to listOf(
+            Match(
+                homeTeam = "Porto",
+                awayTeam = "Boavista",
+                date = LocalDateTime.of(
+                    2024,
+                    12,
+                    28,
+                    20,
+                    0),
+                channel = "RTP",
+                originalText = "")))
 
-        return ComposeView(requireContext()).apply {
-            setContent {
-                Surface(
-                    color = Color.White) {
-                    Column {
-                        val pagerState = rememberPagerState(
-                            initialPage = 0,
-                            pageCount = { mapEntryList.size })
+    Surface(
+        color = Color.White) {
+        Column {
+            val pagerState = rememberPagerState(
+                initialPage = 0,
+                pageCount = { dayMap.size })
 
-                        TabLayout(mapEntryList, pagerState)
-                        HorizontalPager(state = pagerState) { index ->
-                            ZappingDay(mapEntryList[index].value)
-                        }
-                    }
-                }
+            val mapEntryList by remember { mutableStateOf(dayMap.entries.toList()) }
+
+            TabLayout(mapEntryList, pagerState)
+            HorizontalPager(state = pagerState) { index ->
+                ZappingDay(mapEntryList[index].value)
             }
         }
     }
