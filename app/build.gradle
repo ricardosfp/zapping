@@ -73,6 +73,7 @@ dependencies {
     // Compose
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.constraintLayout)
+    implementation(libs.compose.liveData)
     implementation(libs.compose.material3)
     implementation(libs.compose.tooling.preview)
     debugImplementation(libs.compose.tooling)

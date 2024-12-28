@@ -5,20 +5,22 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ricardosfp.zapping.R
-import com.ricardosfp.zapping.databinding.FragmentZappingBinding
 import com.ricardosfp.zapping.ui.viewmodel.zapping.ZappingViewModel
 import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiDataReady
 import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiError
 import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiIdle
 import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiLoading
+import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ZappingFragment: Fragment() {
-    private lateinit var viewBinding: FragmentZappingBinding
     private lateinit var viewModel: ZappingViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,41 +32,43 @@ class ZappingFragment: Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-        viewBinding = FragmentZappingBinding.inflate(inflater, container, false)
 
-        return viewBinding.root
+        val initialState = viewModel.uiStateLiveData.value
+
+        return ComposeView(requireContext()).apply {
+            setContent {
+
+                if (initialState == null) {
+                    // show some error screen
+                    ErrorWidget()
+                } else {
+                    val uiState = viewModel.uiStateLiveData.observeAsState(initialState)
+
+                    StateToScreen(uiState.value)
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun StateToScreen(uiState: UiState) {
+        when (uiState) {
+            UiIdle, UiLoading -> {
+                LoadingWidget()
+            }
+
+            is UiDataReady -> {
+                DataReadyWidget(uiState.dayMap)
+            }
+
+            UiError -> {
+                ErrorWidget()
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // this has to be done here with the view lifecycle to avoid a strange situation (for example,
-        // when having a FragmentTransaction to another Fragment and then popping the back stack).
-        // In that case the view gets destroyed but the Fragment itself does not get destroyed.
-        // So, in that case, the Observer would not be called again
-        viewModel.uiStateLiveData.observe(viewLifecycleOwner) { response ->
-            when (response) {
-                UiIdle, UiLoading -> {
-                    viewBinding.zappingComposeView.setContent {
-                        LoadingWidget()
-                    }
-                }
-
-                is UiDataReady -> {
-
-                    viewBinding.zappingComposeView.setContent {
-                        DataReadyWidget(response.dayMap)
-                    }
-                }
-
-                UiError -> {
-                    viewBinding.zappingComposeView.setContent {
-                        ErrorWidget()
-                    }
-                }
-            }
-        }
 
         // todo this means that data is not fetched again when recovering from process death.
         //  Implement a cache mechanism. See (refresh = false)
