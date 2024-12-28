@@ -24,10 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import com.ricardosfp.zapping.R
 import com.ricardosfp.zapping.domain.model.Match
+import com.ricardosfp.zapping.ui.viewmodel.zapping.model.DateWithFormattedString
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class ZappingDataReadyFragment: Fragment() {
 
@@ -38,7 +36,7 @@ class ZappingDataReadyFragment: Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        val dayMap = (arguments?.getSerializable(DAY_MAP_KEY) as? Map<Date, List<Match>>)
+        val dayMap = (arguments?.getSerializable(DAY_MAP_KEY) as? Map<DateWithFormattedString, List<Match>>)
             ?: return ComposeView(requireContext()).apply {
                 setContent {
                     Surface(color = Color.White) {
@@ -70,10 +68,11 @@ class ZappingDataReadyFragment: Fragment() {
     }
 }
 
-private val DATE_FORMAT = SimpleDateFormat("EEEE, MMM d", Locale.ENGLISH)
-
 @Composable
-private fun TabLayout(dayList: List<Map.Entry<Date, List<Match>>>, pagerState: PagerState) {
+private fun TabLayout(
+    dayList: List<Map.Entry<DateWithFormattedString, List<Match>>>,
+    pagerState: PagerState
+) {
     val scope = rememberCoroutineScope()
 
     ScrollableTabRow(
@@ -94,7 +93,7 @@ private fun TabLayout(dayList: List<Map.Entry<Date, List<Match>>>, pagerState: P
                     }
                 },
                 text = {
-                    Text(DATE_FORMAT.format(mapEntry.key))
+                    Text(mapEntry.key.formattedDate)
                 },
                 selectedContentColor = Color.Black,
                 unselectedContentColor = Color.Gray)

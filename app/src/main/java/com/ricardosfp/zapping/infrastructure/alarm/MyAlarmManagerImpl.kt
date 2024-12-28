@@ -14,7 +14,8 @@ import com.ricardosfp.zapping.infrastructure.util.ObjectToByte
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Calendar
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,20 +26,18 @@ class MyAlarmManagerImpl @Inject constructor(@ApplicationContext val context: Co
 
     companion object {
         // alarm advance in minutes
-        private const val ALARM_ADVANCE_MINUTES = -30
+        private const val ALARM_ADVANCE_MINUTES = 30L
     }
 
     // todo this function could return something to indicate success/error
+    // todo alarms might issue at the wrong time because they depend on the devices time, and not on some synchronised time
     override fun scheduleAlarm(alarm: Alarm) {
 
         (context as ApplicationClass).applicationScope.launch(Dispatchers.Default) {
 
-            val alarmTime = Calendar.getInstance()
-            alarmTime.time = alarm.matchDate
-
             // todo don't issue alarms for matches that have already finished
             //  I need to calculate that
-            if (Calendar.getInstance().after(alarmTime)) {
+            if (LocalDateTime.now().isAfter(alarm.matchDate)) {
                 return@launch
             }
 
@@ -64,28 +63,30 @@ class MyAlarmManagerImpl @Inject constructor(@ApplicationContext val context: Co
                 alarmIntent,
                 PendingIntent.FLAG_IMMUTABLE)
 
-            alarmTime.add(Calendar.MINUTE, ALARM_ADVANCE_MINUTES)
-            Log.d("alarm", String.format("alarm set for %s", alarmTime.time.toString()))
+            val alarmTime = alarm.matchDate.minusMinutes(ALARM_ADVANCE_MINUTES)
+            Log.d("alarm", String.format("alarm set for %s", alarmTime))
 
             val alarmMgr = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val alarmTimeMillis = alarmTime.toEpochSecond(OffsetDateTime.now().offset)
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 // this could be called in the constructor, because it does not change during the lifetime of the app
                 if (alarmMgr.canScheduleExactAlarms()) {
                     alarmMgr.setExactAndAllowWhileIdle(
                         AlarmManager.RTC_WAKEUP,
-                        alarmTime.timeInMillis,
+                        alarmTimeMillis,
                         alarmPendingIntent) // alarmMgr.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 15000, alarmPendingIntent);
                 } else {
                     // schedule inexact alarms?
                     alarmMgr.setAndAllowWhileIdle(
                         AlarmManager.RTC_WAKEUP,
-                        alarmTime.timeInMillis,
+                        alarmTimeMillis,
                         alarmPendingIntent)
                 }
             } else {
                 alarmMgr.setExactAndAllowWhileIdle(
                     AlarmManager.RTC_WAKEUP,
-                    alarmTime.timeInMillis,
+                    alarmTimeMillis,
                     alarmPendingIntent) // alarmMgr.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis() + 15000, alarmPendingIntent);
             }
         }

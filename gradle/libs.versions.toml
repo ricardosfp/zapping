@@ -6,6 +6,7 @@ compose = "2024.12.01"
 constraintLayout = "1.1.0"
 coreKtx = "1.15.0"
 coroutines = "1.9.0"
+desugaring = "2.1.4"
 fragmentKtx = "1.8.5"
 gradlePlugin = "8.7.2"
 hilt = "2.52"
@@ -31,6 +32,7 @@ compose-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+desugaring = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugaring" }
 fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
 hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }

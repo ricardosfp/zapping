@@ -8,7 +8,7 @@ import com.ricardosfp.zapping.infrastructure.util.date.DateUtilsImpl
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.util.Date
+import java.time.LocalDateTime
 
 class MatchParserImplTest {
 
@@ -59,7 +59,7 @@ class MatchParserImplTest {
         assertEquals(validArticleTitle, match.originalText)
         assertEquals(VALID_ARTICLE_HOME_TEAM, match.homeTeam)
         assertEquals(VALID_ARTICLE_AWAY_TEAM, match.awayTeam)
-        assertEquals(Date(2024 - 1900, 4, 14, 23, 0, 0), match.date)
+        assertEquals(LocalDateTime.of(2024, 5, 14, 23, 0), match.date)
         assertEquals(VALID_ARTICLE_CHANNEL, match.channel)
         assertEquals(validArticleTitle, match.originalText)
     }

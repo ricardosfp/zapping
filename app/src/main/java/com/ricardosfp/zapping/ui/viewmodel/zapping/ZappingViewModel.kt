@@ -11,9 +11,8 @@ import com.ricardosfp.zapping.data.repository.model.result.GetArticlesSuccess
 import com.ricardosfp.zapping.domain.match.MatchParser
 import com.ricardosfp.zapping.domain.model.Match
 import com.ricardosfp.zapping.domain.model.MatchParseSuccess
-import com.ricardosfp.zapping.infrastructure.alarm.MyAlarmManager
-import com.ricardosfp.zapping.infrastructure.model.Alarm
 import com.ricardosfp.zapping.infrastructure.util.date.DateUtils
+import com.ricardosfp.zapping.ui.viewmodel.zapping.model.DateWithFormattedString
 import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiDataReady
 import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiError
 import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiIdle
@@ -23,7 +22,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 // todo test
@@ -31,9 +30,16 @@ import javax.inject.Inject
 class ZappingViewModel @Inject constructor(
     private val zappingRepository: ZappingRepository,
     private val dateUtils: DateUtils,
-    private val alarmManager: MyAlarmManager,
     private val matchParser: MatchParser
 ): ViewModel() {
+
+    companion object {
+        private const val DATE_FORMAT = "EEEE, MMM d"
+
+        // the formatting is not respecting the device's language
+        // todo this should depend on the context, to return a localized string
+        private val LOCALE = Locale.ENGLISH
+    }
 
     private val _uiStateLiveData = MutableLiveData<UiState>(UiIdle)
     val uiStateLiveData: LiveData<UiState> = _uiStateLiveData
@@ -64,9 +70,12 @@ class ZappingViewModel @Inject constructor(
                             it.date
                         }
 
-                        val dayMap = mutableMapOf<Date, MutableList<Match>>()
+                        val dayMap = mutableMapOf<DateWithFormattedString, MutableList<Match>>()
                         sortedMatches.forEach { match ->
-                            dayMap.computeIfAbsent(dateUtils.dateAtMidnight(match.date)) {
+                            dayMap.computeIfAbsent(
+                                DateWithFormattedString(
+                                    dateUtils.getDate(match.date),
+                                    dateUtils.format(match.date, DATE_FORMAT, LOCALE))) {
                                 mutableListOf()
                             }.add(match)
                         }
@@ -80,9 +89,5 @@ class ZappingViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun scheduleAlarm(alarm: Alarm) {
-        alarmManager.scheduleAlarm(alarm)
     }
 }
