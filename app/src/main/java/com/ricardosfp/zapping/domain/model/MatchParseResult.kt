@@ -1,6 +1,6 @@
 package com.ricardosfp.zapping.domain.model
 
-import java.text.ParseException
+import java.time.format.DateTimeParseException
 
 sealed class MatchParseResult
 
@@ -8,7 +8,8 @@ data class MatchParseSuccess(val match: Match): MatchParseResult()
 
 sealed class MatchParseError: MatchParseResult()
 
-data class MatchParseDateError(val exception: ParseException?): MatchParseError()
+// to be even more library agnostic I could create my own exceptions
+data class MatchParseDateError(val exception: DateTimeParseException): MatchParseError()
 
 data object MatchParseTitleError: MatchParseError()
 

@@ -43,6 +43,9 @@ android {
     }
 
     compileOptions {
+        // added to support java.time in minSdk < 26
+        coreLibraryDesugaringEnabled = true
+
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
@@ -89,6 +92,9 @@ dependencies {
 
     // RSS Parser
     implementation(libs.rssparser)
+
+    // added to support java.time in minSdk < 26
+    coreLibraryDesugaring(libs.desugaring)
 
     // testing
 

@@ -16,21 +16,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ricardosfp.zapping.domain.model.Match
-import java.text.SimpleDateFormat
-import java.util.Date
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 private val matchListSample = listOf(
     Match(
         homeTeam = "Valência",
         awayTeam = "Porto",
-        date = Date(2024 - 1900, 10, 10, 10, 10),
+        date = LocalDateTime.of(2024, 10, 10, 10, 10),
         channel = "Sport tv",
         originalText = ""),
     Match(
         homeTeam = "Estrela da Amadora",
         awayTeam = "Beira-Mar",
-        date = Date(2024 - 1900, 10, 10, 15, 0),
+        date = LocalDateTime.of(2024, 10, 10, 15, 0),
         channel = "Sport tv",
         originalText = "")
 )
@@ -68,7 +68,7 @@ private fun ZappingDayPreview() {
     }
 }
 
-private val DATE_FORMAT = SimpleDateFormat("HH:mm", Locale.ENGLISH)
+private val DATE_FORMAT = DateTimeFormatter.ofPattern("HH:mm", Locale.ENGLISH)
 private val TEXT_STYLE = TextStyle(fontSize = 16.sp, color = Color.Black)
 
 @Composable
