@@ -1,4 +1,4 @@
-package com.ricardosfp.zapping.ui.view
+package com.ricardosfp.zapping.ui.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
