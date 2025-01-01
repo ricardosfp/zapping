@@ -49,6 +49,5 @@ class ZappingRepositoryImpl @Inject constructor(
         catch (ex: Exception) {
             GetArticlesOtherExceptionError(ex)
         }
-
     }
 }

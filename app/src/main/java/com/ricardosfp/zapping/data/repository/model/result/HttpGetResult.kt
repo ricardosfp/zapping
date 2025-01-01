@@ -7,6 +7,8 @@ data class HttpGetSuccess(val bodyAsString: String): HttpGetResult()
 
 sealed class HttpGetError: HttpGetResult()
 
+data object HttpGetNoBody: HttpGetError()
+
 // maybe add the http response code
 data class HttpGetUnsuccessfulResponse(val bodyAsString: String): HttpGetError()
 
