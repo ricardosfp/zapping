@@ -61,21 +61,19 @@ dependencies {
 
     // Jetpack
     implementation(libs.activity.ktx)
-    implementation(libs.appcompat)
     implementation(libs.collection.ktx)
     implementation(libs.core.ktx)
-    implementation(libs.fragment.ktx)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
-    implementation(libs.recyclerview)
-    implementation(libs.viewpager2)
 
     // Compose
+    implementation(libs.compose.activity)
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.constraintLayout)
     implementation(libs.compose.liveData)
     implementation(libs.compose.material3)
     implementation(libs.compose.tooling.preview)
+    implementation(libs.compose.viewModel)
     debugImplementation(libs.compose.tooling)
 
     // Material

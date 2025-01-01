@@ -1,6 +1,7 @@
 package com.ricardosfp.zapping.ui.composable
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -30,6 +31,7 @@ import java.time.LocalDateTime
 @Composable
 fun DataReadyWidget(dayMap: Map<DateWithFormattedString, List<Match>>) {
     Surface(
+        Modifier.fillMaxSize(),
         color = Color.White) {
         Column {
             val pagerState = rememberPagerState(

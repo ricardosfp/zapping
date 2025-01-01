@@ -16,6 +16,7 @@ import com.ricardosfp.zapping.R
 @Composable
 fun LoadingWidget() {
     Surface(
+        Modifier.fillMaxSize(),
         color = Color.White) {
         IndeterminateCircularProgressIndicator()
     }

@@ -18,6 +18,7 @@ import com.ricardosfp.zapping.R
 @Composable
 fun ErrorWidget() {
     Surface(
+        Modifier.fillMaxSize(),
         color = Color.White) {
         ErrorText()
     }
