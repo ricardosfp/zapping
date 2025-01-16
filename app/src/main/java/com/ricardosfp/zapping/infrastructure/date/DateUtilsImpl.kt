@@ -1,4 +1,4 @@
-package com.ricardosfp.zapping.infrastructure.util.date
+package com.ricardosfp.zapping.infrastructure.date
 
 import java.time.LocalDate
 import java.time.LocalDateTime

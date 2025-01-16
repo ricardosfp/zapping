@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import com.ricardosfp.zapping.infrastructure.AlarmReceiver
 import com.ricardosfp.zapping.infrastructure.ApplicationClass
 import com.ricardosfp.zapping.infrastructure.model.Alarm
 import com.ricardosfp.zapping.infrastructure.util.ObjectToByte

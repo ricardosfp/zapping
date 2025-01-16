@@ -1,11 +1,10 @@
-package com.ricardosfp.zapping.data.repository.implementation
+package com.ricardosfp.zapping.data.repository.rss
 
 import com.prof18.rssparser.RssParser
-import com.ricardosfp.zapping.data.repository.contract.MyRssParser
-import com.ricardosfp.zapping.data.repository.model.MyRssItem
-import com.ricardosfp.zapping.data.repository.model.result.RssParseException
-import com.ricardosfp.zapping.data.repository.model.result.RssParseResult
-import com.ricardosfp.zapping.data.repository.model.result.RssParseSuccess
+import com.ricardosfp.zapping.data.repository.rss.model.MyRssItem
+import com.ricardosfp.zapping.data.repository.rss.model.RssParseException
+import com.ricardosfp.zapping.data.repository.rss.model.RssParseResult
+import com.ricardosfp.zapping.data.repository.rss.model.RssParseSuccess
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

@@ -1,6 +1,5 @@
-package com.ricardosfp.zapping.data.repository.model.result
+package com.ricardosfp.zapping.data.repository.zapping.model
 
-import com.ricardosfp.zapping.data.repository.model.MyArticle
 import java.util.Collections
 
 sealed class GetArticlesResult

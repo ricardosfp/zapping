@@ -1,18 +1,17 @@
-package com.ricardosfp.zapping.data.repository.implementation
+package com.ricardosfp.zapping.data.repository.zapping
 
-import com.ricardosfp.zapping.data.repository.contract.MyHttpClient
-import com.ricardosfp.zapping.data.repository.contract.MyRssParser
-import com.ricardosfp.zapping.data.repository.contract.ZappingRepository
-import com.ricardosfp.zapping.data.repository.model.MyArticle
-import com.ricardosfp.zapping.data.repository.model.result.GetArticlesHttpError
-import com.ricardosfp.zapping.data.repository.model.result.GetArticlesOtherExceptionError
-import com.ricardosfp.zapping.data.repository.model.result.GetArticlesParseError
-import com.ricardosfp.zapping.data.repository.model.result.GetArticlesResult
-import com.ricardosfp.zapping.data.repository.model.result.GetArticlesSuccess
-import com.ricardosfp.zapping.data.repository.model.result.HttpGetError
-import com.ricardosfp.zapping.data.repository.model.result.HttpGetSuccess
-import com.ricardosfp.zapping.data.repository.model.result.RssParseError
-import com.ricardosfp.zapping.data.repository.model.result.RssParseSuccess
+import com.ricardosfp.zapping.data.repository.httpclient.MyHttpClient
+import com.ricardosfp.zapping.data.repository.rss.MyRssParser
+import com.ricardosfp.zapping.data.repository.zapping.model.MyArticle
+import com.ricardosfp.zapping.data.repository.zapping.model.GetArticlesHttpError
+import com.ricardosfp.zapping.data.repository.zapping.model.GetArticlesOtherExceptionError
+import com.ricardosfp.zapping.data.repository.zapping.model.GetArticlesParseError
+import com.ricardosfp.zapping.data.repository.zapping.model.GetArticlesResult
+import com.ricardosfp.zapping.data.repository.zapping.model.GetArticlesSuccess
+import com.ricardosfp.zapping.data.repository.httpclient.model.HttpGetError
+import com.ricardosfp.zapping.data.repository.httpclient.model.HttpGetSuccess
+import com.ricardosfp.zapping.data.repository.rss.model.RssParseError
+import com.ricardosfp.zapping.data.repository.rss.model.RssParseSuccess
 import javax.inject.Inject
 import javax.inject.Singleton
 

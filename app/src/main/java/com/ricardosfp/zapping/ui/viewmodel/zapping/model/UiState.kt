@@ -1,6 +1,6 @@
 package com.ricardosfp.zapping.ui.viewmodel.zapping.model
 
-import com.ricardosfp.zapping.domain.model.Match
+import com.ricardosfp.zapping.domain.match.model.Match
 import java.util.Collections
 
 sealed class UiState

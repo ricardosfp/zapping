@@ -22,7 +22,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ricardosfp.zapping.R
-import com.ricardosfp.zapping.domain.model.Match
+import com.ricardosfp.zapping.domain.match.model.Match
 import com.ricardosfp.zapping.ui.viewmodel.zapping.model.DateWithFormattedString
 import kotlinx.coroutines.launch
 import java.time.LocalDate

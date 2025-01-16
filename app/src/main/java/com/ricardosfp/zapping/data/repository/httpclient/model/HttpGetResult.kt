@@ -1,4 +1,4 @@
-package com.ricardosfp.zapping.data.repository.model.result
+package com.ricardosfp.zapping.data.repository.httpclient.model
 
 // this could be generic
 sealed class HttpGetResult

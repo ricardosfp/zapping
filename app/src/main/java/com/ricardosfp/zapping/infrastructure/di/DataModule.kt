@@ -2,12 +2,12 @@ package com.ricardosfp.zapping.infrastructure.di
 
 import com.prof18.rssparser.RssParser
 import com.prof18.rssparser.RssParserBuilder
-import com.ricardosfp.zapping.data.repository.contract.MyHttpClient
-import com.ricardosfp.zapping.data.repository.contract.MyRssParser
-import com.ricardosfp.zapping.data.repository.contract.ZappingRepository
-import com.ricardosfp.zapping.data.repository.implementation.MyHttpClientImpl
-import com.ricardosfp.zapping.data.repository.implementation.MyRssParserImpl
-import com.ricardosfp.zapping.data.repository.implementation.ZappingRepositoryImpl
+import com.ricardosfp.zapping.data.repository.httpclient.MyHttpClient
+import com.ricardosfp.zapping.data.repository.rss.MyRssParser
+import com.ricardosfp.zapping.data.repository.zapping.ZappingRepository
+import com.ricardosfp.zapping.data.repository.httpclient.MyHttpClientImpl
+import com.ricardosfp.zapping.data.repository.rss.MyRssParserImpl
+import com.ricardosfp.zapping.data.repository.zapping.ZappingRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

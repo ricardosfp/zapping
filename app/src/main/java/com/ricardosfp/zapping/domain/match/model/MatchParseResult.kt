@@ -1,4 +1,4 @@
-package com.ricardosfp.zapping.domain.model
+package com.ricardosfp.zapping.domain.match.model
 
 import java.time.format.DateTimeParseException
 

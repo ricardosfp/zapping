@@ -2,8 +2,8 @@ package com.ricardosfp.zapping.infrastructure.di
 
 import com.ricardosfp.zapping.infrastructure.alarm.MyAlarmManager
 import com.ricardosfp.zapping.infrastructure.alarm.MyAlarmManagerImpl
-import com.ricardosfp.zapping.infrastructure.util.date.DateUtils
-import com.ricardosfp.zapping.infrastructure.util.date.DateUtilsImpl
+import com.ricardosfp.zapping.infrastructure.date.DateUtils
+import com.ricardosfp.zapping.infrastructure.date.DateUtilsImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

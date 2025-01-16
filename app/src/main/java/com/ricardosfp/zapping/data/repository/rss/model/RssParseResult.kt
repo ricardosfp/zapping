@@ -1,6 +1,5 @@
-package com.ricardosfp.zapping.data.repository.model.result
+package com.ricardosfp.zapping.data.repository.rss.model
 
-import com.ricardosfp.zapping.data.repository.model.MyRssItem
 import java.util.Collections
 
 sealed class RssParseResult
