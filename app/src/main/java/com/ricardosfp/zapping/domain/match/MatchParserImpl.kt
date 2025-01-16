@@ -1,13 +1,13 @@
 package com.ricardosfp.zapping.domain.match
 
-import com.ricardosfp.zapping.data.repository.model.MyArticle
-import com.ricardosfp.zapping.domain.model.Match
-import com.ricardosfp.zapping.domain.model.MatchParseDateError
-import com.ricardosfp.zapping.domain.model.MatchParseOtherExceptionError
-import com.ricardosfp.zapping.domain.model.MatchParseResult
-import com.ricardosfp.zapping.domain.model.MatchParseSuccess
-import com.ricardosfp.zapping.domain.model.MatchParseTitleError
-import com.ricardosfp.zapping.infrastructure.util.date.DateUtils
+import com.ricardosfp.zapping.data.repository.zapping.model.MyArticle
+import com.ricardosfp.zapping.domain.match.model.Match
+import com.ricardosfp.zapping.domain.match.model.MatchParseDateError
+import com.ricardosfp.zapping.domain.match.model.MatchParseOtherExceptionError
+import com.ricardosfp.zapping.domain.match.model.MatchParseResult
+import com.ricardosfp.zapping.domain.match.model.MatchParseSuccess
+import com.ricardosfp.zapping.domain.match.model.MatchParseTitleError
+import com.ricardosfp.zapping.infrastructure.date.DateUtils
 import java.time.format.DateTimeParseException
 import java.util.Locale
 import javax.inject.Inject
@@ -24,7 +24,10 @@ class MatchParserImpl @Inject constructor(
 
     override fun parse(article: MyArticle): MatchParseResult {
         return try {
-            val date = dateUtils.parse(dateString = article.date, pattern = DATE_FORMAT, Locale.ENGLISH)
+            val date = dateUtils.parse(
+                dateString = article.date,
+                pattern = DATE_FORMAT,
+                Locale.ENGLISH)
             val originalText = article.title
 
             val parts = originalText.split(" - ")
@@ -59,12 +62,10 @@ class MatchParserImpl @Inject constructor(
             }
         }
         catch (ex: DateTimeParseException) {
-            ex.printStackTrace()
             // todo report this error
             return MatchParseDateError(ex)
         }
         catch (ex: Exception) {
-            ex.printStackTrace()
             // todo report this error
             return MatchParseOtherExceptionError(ex)
         }

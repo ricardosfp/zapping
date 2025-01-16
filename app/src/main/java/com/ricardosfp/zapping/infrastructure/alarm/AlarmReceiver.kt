@@ -1,4 +1,4 @@
-package com.ricardosfp.zapping.infrastructure
+package com.ricardosfp.zapping.infrastructure.alarm
 
 import android.Manifest
 import android.content.BroadcastReceiver
@@ -9,7 +9,7 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.ricardosfp.zapping.infrastructure.alarm.MyAlarmManager
+import com.ricardosfp.zapping.infrastructure.NotificationChannel
 import com.ricardosfp.zapping.infrastructure.model.Alarm
 import com.ricardosfp.zapping.infrastructure.util.ObjectToByte.deserialize
 import java.util.concurrent.ThreadLocalRandom

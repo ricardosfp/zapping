@@ -15,7 +15,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ricardosfp.zapping.domain.model.Match
+import com.ricardosfp.zapping.domain.match.model.Match
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.Locale
