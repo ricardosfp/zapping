@@ -11,5 +11,7 @@ interface DateUtils {
 
     fun format(date: LocalDateTime, pattern: String, locale: Locale): String
 
+    fun format(date: LocalDate, pattern: String, locale: Locale): String
+
     fun getDate(date: LocalDateTime): LocalDate
 }

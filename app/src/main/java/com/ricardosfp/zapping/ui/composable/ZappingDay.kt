@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.sp
 import com.ricardosfp.zapping.domain.match.model.Match
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 private val matchListSample = listOf(
     Match(
@@ -68,7 +67,7 @@ private fun ZappingDayPreview() {
     }
 }
 
-private val DATE_FORMAT = DateTimeFormatter.ofPattern("HH:mm", Locale.ENGLISH)
+private val DATE_FORMAT = DateTimeFormatter.ofPattern("HH:mm")
 private val TEXT_STYLE = TextStyle(fontSize = 16.sp, color = Color.Black)
 
 @Composable
