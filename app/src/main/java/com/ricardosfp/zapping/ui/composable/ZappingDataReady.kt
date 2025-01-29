@@ -23,13 +23,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ricardosfp.zapping.R
 import com.ricardosfp.zapping.domain.match.model.Match
-import com.ricardosfp.zapping.ui.viewmodel.zapping.model.DateWithFormattedString
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @Composable
-fun DataReadyWidget(dayMap: Map<DateWithFormattedString, List<Match>>) {
+fun DataReadyWidget(dayMap: Map<LocalDate, List<Match>>, getFormattedDate: (LocalDate) -> String) {
     Surface(
         Modifier.fillMaxSize(),
         color = Color.White) {
@@ -40,7 +41,7 @@ fun DataReadyWidget(dayMap: Map<DateWithFormattedString, List<Match>>) {
 
             val mapEntryList by remember { mutableStateOf(dayMap.entries.toList()) }
 
-            TabLayout(mapEntryList, pagerState)
+            TabLayout(mapEntryList, pagerState, getFormattedDate)
             HorizontalPager(state = pagerState) { index ->
                 ZappingDay(mapEntryList[index].value)
             }
@@ -52,12 +53,10 @@ fun DataReadyWidget(dayMap: Map<DateWithFormattedString, List<Match>>) {
 @Composable
 private fun DataReadyPreview() {
     val dayMap = mapOf(
-        DateWithFormattedString(
-            LocalDate.of(
-                2024,
-                12,
-                28),
-            "sexta, 28 de dezembro") to listOf(
+        LocalDate.of(
+            2024,
+            12,
+            28) to listOf(
             Match(
                 homeTeam = "Porto",
                 awayTeam = "Boavista",
@@ -70,6 +69,8 @@ private fun DataReadyPreview() {
                 channel = "RTP",
                 originalText = "")))
 
+    val dateFormat = "EEEE, MMM d"
+
     Surface(
         color = Color.White) {
         Column {
@@ -79,7 +80,9 @@ private fun DataReadyPreview() {
 
             val mapEntryList by remember { mutableStateOf(dayMap.entries.toList()) }
 
-            TabLayout(mapEntryList, pagerState)
+            TabLayout(mapEntryList, pagerState) {
+                it.format(DateTimeFormatter.ofPattern(dateFormat, Locale.ENGLISH))
+            }
             HorizontalPager(state = pagerState) { index ->
                 ZappingDay(mapEntryList[index].value)
             }
@@ -89,8 +92,9 @@ private fun DataReadyPreview() {
 
 @Composable
 private fun TabLayout(
-    dayList: List<Map.Entry<DateWithFormattedString, List<Match>>>,
-    pagerState: PagerState
+    dayList: List<Map.Entry<LocalDate, List<Match>>>,
+    pagerState: PagerState,
+    getFormattedDate: (LocalDate) -> String
 ) {
     val scope = rememberCoroutineScope()
 
@@ -112,7 +116,7 @@ private fun TabLayout(
                     }
                 },
                 text = {
-                    Text(mapEntry.key.formattedDate)
+                    Text(getFormattedDate(mapEntry.key))
                 },
                 selectedContentColor = Color.Black,
                 unselectedContentColor = Color.Gray)

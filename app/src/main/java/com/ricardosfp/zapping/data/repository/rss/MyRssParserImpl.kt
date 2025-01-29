@@ -5,16 +5,21 @@ import com.ricardosfp.zapping.data.repository.rss.model.MyRssItem
 import com.ricardosfp.zapping.data.repository.rss.model.RssParseException
 import com.ricardosfp.zapping.data.repository.rss.model.RssParseResult
 import com.ricardosfp.zapping.data.repository.rss.model.RssParseSuccess
+import com.ricardosfp.zapping.infrastructure.di.DispatcherModule.DefaultDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MyRssParserImpl @Inject constructor(private val parser: RssParser): MyRssParser {
+class MyRssParserImpl @Inject constructor(
+    private val parser: RssParser,
+    @DefaultDispatcher private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
+): MyRssParser {
 
     // todo test
-    override suspend fun parse(rssString: String): RssParseResult = withContext(Dispatchers.IO) {
+    override suspend fun parse(rssString: String): RssParseResult = withContext(defaultDispatcher) {
         try {
             val channel = parser.parse(rssString)
 

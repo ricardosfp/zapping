@@ -18,5 +18,9 @@ class DateUtilsImpl @Inject constructor(): DateUtils {
     override fun format(date: LocalDateTime, pattern: String, locale: Locale): String =
         date.format(DateTimeFormatter.ofPattern(pattern, locale))
 
+    override fun format(date: LocalDate, pattern: String, locale: Locale): String =
+        date.format(DateTimeFormatter.ofPattern(pattern, locale))
+
+
     override fun getDate(date: LocalDateTime): LocalDate = date.toLocalDate()
 }

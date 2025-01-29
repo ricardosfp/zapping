@@ -36,6 +36,7 @@ import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiIdle
 import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiLoading
 import com.ricardosfp.zapping.ui.viewmodel.zapping.model.UiState
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDate
 
 @AndroidEntryPoint
 class MainActivity: ComponentActivity() {
@@ -83,7 +84,7 @@ class MainActivity: ComponentActivity() {
                     } else {
                         val uiState = viewModel.uiStateLiveData.observeAsState(initialState)
 
-                        StateToScreen(uiState.value)
+                        StateToScreen(uiState.value, viewModel::getFormattedDateString)
                     }
                 }
             }
@@ -98,14 +99,14 @@ class MainActivity: ComponentActivity() {
 }
 
 @Composable
-private fun StateToScreen(uiState: UiState) {
+private fun StateToScreen(uiState: UiState, getFormattedDate: (LocalDate) -> String) {
     when (uiState) {
         UiIdle, UiLoading -> {
             LoadingWidget()
         }
 
         is UiDataReady -> {
-            DataReadyWidget(uiState.dayMap)
+            DataReadyWidget(uiState.dayMap, getFormattedDate)
         }
 
         UiError -> {
